@@ -3,26 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>PokeMaths - V13.3 Audio Sync</title>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="PokeMaths">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball-pouch.png">
+    
+    <title>PokeMaths</title>
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Sniglet&display=swap" rel="stylesheet">
     <style>
         :root { --font-main: 'Sniglet', cursive; --font-title: 'Luckiest Guy', cursive; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-main); user-select: none; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
         body { background: #1e3799; color: #fff; height: 100vh; width: 100vw; display: flex; flex-direction: column; overflow: hidden; }
 
+        /* OVERLAYS */
         #overlay, #result-screen { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 500; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 15px; }
         .diff-row { display: flex; justify-content: center; gap: 8px; width: 100%; max-width: 450px; margin-top: 10px; }
         .diff-card { flex: 1; background: #fff; color: #333; padding: 10px 5px; border-radius: 15px; border: 4px solid #ffcb05; display: flex; flex-direction: column; align-items: center; box-shadow: 0 5px 0 #d4a017; cursor: pointer; }
         .diff-card img { width: 100%; max-width: 65px; height: auto; }
 
+        /* ARENA & TRACKER */
         #arena { height: 35vh; display: flex; justify-content: center; align-items: stretch; gap: 8px; padding: 5px; opacity: 0; transition: opacity 0.5s; }
         .card-slot { flex: 1; max-width: 280px; display: flex; flex-direction: column; }
         .team-tracker { display: flex; justify-content: center; gap: 6px; margin-bottom: 4px; height: 24px; }
-        .ball-proper { width: 22px; height: 22px; background: white; border-radius: 50%; border: 2.5px solid #333; position: relative; overflow: hidden; box-shadow: 0 3px 6px rgba(0,0,0,0.4); }
-        .ball-proper::before { content: ""; position: absolute; top: 0; width: 100%; height: 50%; background: #eb4d4b; border-bottom: 2.5px solid #333; }
+        .ball-proper { width: 22px; height: 22px; background: white; border-radius: 50%; border: 2px solid #333; position: relative; overflow: hidden; box-shadow: 0 3px 6px rgba(0,0,0,0.4); }
+        .ball-proper::before { content: ""; position: absolute; top: 0; width: 100%; height: 50%; background: #eb4d4b; border-bottom: 2px solid #333; }
         .ball-proper::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 6px; height: 6px; background: white; border: 1.5px solid #333; border-radius: 50%; z-index: 2; }
         .ball-proper.spent { filter: grayscale(1) brightness(0.2); opacity: 0.5; }
 
+        /* CARD HEADER */
         .card { flex: 1; display: flex; flex-direction: column; border-radius: 12px; padding: 4px; border: 4px solid #f1c40f; background: #fff; position: relative; overflow: hidden; transition: transform 0.2s, background-color 0.5s; }
         .tcg-hp-container { flex-shrink: 0; display: flex; flex-direction: column; background: rgba(0,0,0,0.85); border-radius: 8px; padding: 4px 8px; border: 1.5px solid #fff; margin-bottom: 2px; }
         .hp-header { display: flex; justify-content: space-between; align-items: center; width: 100%; }
@@ -36,6 +45,7 @@
         .move-list { flex-shrink: 0; background: rgba(0,0,0,0.8); padding: 4px 6px; border-radius: 8px; border: 1px solid #fff; min-height: 38px; }
         .move-row { display: flex; justify-content: space-between; color: #fff; font-weight: bold; font-size: 0.58rem; }
 
+        /* ANIMATIONS */
         .lunge-right { transform: translateX(40px) scale(1.05) rotate(5deg) !important; }
         .lunge-left { transform: translateX(-40px) scale(1.05) rotate(-5deg) !important; }
         .damage-shake { animation: shakeFx 0.4s; }
@@ -43,6 +53,7 @@
         .fainted { animation: faintFx 0.8s ease-in forwards !important; }
         @keyframes faintFx { 100% { transform: translateY(400px) rotate(30deg); opacity: 0; } }
 
+        /* UI ELEMENTS */
         #timer-container { width: 95%; height: 14px; background: #222; margin: 4px auto; border-radius: 10px; border: 2px solid #fff; overflow: hidden; }
         #timer-fill { height: 100%; width: 100%; background: #00ffcc; transition: width 0.1s linear; }
         #question-area { height: 16vh; display: flex; align-items: stretch; justify-content: center; padding: 4px; gap: 6px; }
@@ -51,16 +62,20 @@
         #sum-box { flex: 0 0 115px; background: #fff; border: 4px solid #e74c3c; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Courier New', monospace; font-size: 1.8rem; color: #333; position: relative; }
         .sum-symbol { position: absolute; left: 10px; color: #e74c3c; font-size: 2rem; }
 
-        #controls-area { height: 46vh; background: linear-gradient(180deg, #0984e3 0%, #2980b9 100%); border-top: 5px solid #f1c40f; display: flex; align-items: stretch; justify-content: center; padding: 10px; border-radius: 25px 25px 0 0; gap: 10px; }
-        #potion-belt { display: flex; flex-direction: column; gap: 8px; width: 95px; }
+        /* CONTROLS AREA - RE-STABILIZED FLEXBOX */
+        #controls-area { height: 46vh; background: linear-gradient(180deg, #0984e3 0%, #2980b9 100%); border-top: 5px solid #f1c40f; display: flex; flex-direction: row; align-items: stretch; justify-content: center; padding: 10px; border-radius: 25px 25px 0 0; gap: 10px; padding-bottom: env(safe-area-inset-bottom); }
+        
+        #potion-belt { display: flex; flex-direction: column; gap: 8px; width: 95px; flex-shrink: 0; }
         .potion-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 15px; border: 3px solid #fff; color: white; text-align: center; box-shadow: 0 4px 0 rgba(0,0,0,0.3); cursor: pointer; }
         .p-reg { background: #9b59b6; } .p-super { background: #f1c40f; color: #333; } .p-hyper { background: #e91e63; }
-        
-        #numpad-container { flex: 1; max-width: 400px; display: flex; flex-direction: column; }
+
+        #numpad-wrapper { flex: 1; display: flex; flex-direction: column; max-width: 450px; }
         #display-answer { background: #fff; font-size: 1.8rem; width: 100%; border-radius: 8px; height: 42px; color: #000; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 3px solid #f39c12; margin-bottom: 6px; }
-        .pad-and-submit { display: flex; width: 100%; gap: 10px; flex: 1; }
+        
+        .pad-and-submit { display: flex; flex-direction: row; flex: 1; gap: 10px; }
         .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; flex: 3; }
         .num-btn { background: #f5f6fa; border: none; border-radius: 12px; font-size: 1.6rem; font-weight: bold; box-shadow: 0 4.5px 0 #bdc3c7; color: #2f3640; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        
         .btn-submit { flex: 1.2; background: #eb4d4b; border-radius: 20px; border: 5px solid white; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 6px 0 #c0392b; }
         .pokeball-icon { width: 52px; height: 52px; background: white; border-radius: 50%; border: 3.5px solid #333; position: relative; overflow: hidden; animation: pulsePoke 2s infinite; }
         .pokeball-icon::before { content: ""; position: absolute; top: 0; width: 100%; height: 50%; background: #eb4d4b; border-bottom: 3.5px solid #333; }
@@ -72,7 +87,6 @@
     </style>
 </head>
 <body>
-
     <div id="overlay">
         <h1 style="font-family: var(--font-title); font-size: 2.5rem; color: #ffcb05; text-shadow: 4px 4px #2a75bb;">POKEMATHS</h1>
         <div class="diff-row">
@@ -80,6 +94,7 @@
             <div class="diff-card" onclick="startGame('medium')"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png"><h3>MED</h3></div>
             <div class="diff-card" onclick="startGame('hard')"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png"><h3>HARD</h3></div>
         </div>
+        <p style="margin-top:20px; font-size:0.9rem; color:#ffcb05; font-weight:bold;">Share > 'Add to Home Screen' to play!</p>
     </div>
 
     <div id="result-screen" style="display:none;">
@@ -133,7 +148,7 @@
             <div class="potion-btn p-super" onclick="useHeal('super potion')"><div class="potion-icon">🧴</div><div class="potion-text">SUPER</div></div>
             <div class="potion-btn p-hyper" onclick="useHeal('hyper potion')"><div class="potion-icon">⚗️</div><div class="potion-text">HYPER</div></div>
         </div>
-        <div id="numpad-container">
+        <div id="numpad-wrapper">
             <div id="display-answer"></div>
             <div class="pad-and-submit">
                 <div class="numpad">
@@ -153,7 +168,7 @@
     const pre = ["THUNDER", "FIRE", "HYDRO", "MYSTIC", "SOLAR", "DRAGON", "ICE", "SHADOW", "IRON", "QUICK"];
     const suf = ["BLAST", "PUNCH", "SLASH", "BEAM", "STRIKE", "KICK", "WAVE", "STORM", "CRUSH", "BOLT"];
     const typeBgs = { fire: "#eb3b5a", water: "#4b7bec", grass: "#20bf6b", electric: "#f7b731", psychic: "#a55eea", dragon: "#8854d0", ice: "#45aaf2", bug: "#26de81" };
-    const phonetics = { "RAYQUAZA": "Ray quay zah", "MEWTWO": "Mew two", "KYOGRE": "Ky ogre", "MIRAIDON": "Me rye don", "GHOLDENGO": "Gold en go", "TINKATON": "Tink a ton" };
+    const phonetics = { "RAYQUAZA": "Ray quay zah", "MEWTWO": "Mew two", "KYOGRE": "Ky ogre", "MIRAIDON": "Me rye don", "GHOLDENGO": "Gold en go" };
 
     let playerTeam = [], oppTeam = [], pIndex = 0, oIndex = 0, gameState = { active: false, mode: 'attack', answer: 0, altAnswer: null };
 
@@ -216,20 +231,16 @@
         if (!p || !o) return;
         const getR = (a) => a[Math.floor(Math.random()*a.length)];
         const getV = () => (difficulty === 'easy') ? (Math.floor(Math.random()*3)+2)*10 : (Math.floor(Math.random()*20)+30);
-        
         if (!p.moves.length) p.moves = [{icon: getR(icons), name: `${getR(pre)} ${getR(suf)}`, dmg: getV()}, {icon: getR(icons), name: `${getR(pre)} ${getR(suf)}`, dmg: getV() + 5}];
         if (!o.moves.length) o.moves = [{icon: getR(icons), name: `${getR(pre)} ${getR(suf)}`, dmg: getV()}, {icon: getR(icons), name: `${getR(pre)} ${getR(suf)}`, dmg: getV() + 5}];
-        
         document.getElementById(`p-card`).style.backgroundColor = p.bg;
         document.getElementById(`p-img`).src = p.img; document.getElementById(`p-name`).innerText = p.name;
         document.getElementById(`p-hp-text`).innerText = p.hp;
         document.getElementById(`p-moves`).innerHTML = p.moves.map(m => `<div class="move-row"><span>${m.icon} ${m.name}</span><span>-${m.dmg} HP</span></div>`).join('');
-        
         document.getElementById(`o-card`).style.backgroundColor = o.bg;
         document.getElementById(`o-img`).src = o.img; document.getElementById(`o-name`).innerText = o.name;
         document.getElementById(`o-hp-text`).innerText = o.hp;
         document.getElementById(`o-moves`).innerHTML = o.moves.map(m => `<div class="move-row"><span>${m.icon} ${m.name}</span><span>-${m.dmg} HP</span></div>`).join('');
-        
         const pB = document.getElementById('p-team-tracker').children;
         const oB = document.getElementById('o-team-tracker').children;
         for(let i=0; i<3; i++) { pB[i].className = i < pIndex ? 'ball-proper spent' : 'ball-proper'; oB[i].className = i < oIndex ? 'ball-proper spent' : 'ball-proper'; }
@@ -253,24 +264,19 @@
         playSfx('press');
         const p = playerTeam[pIndex]; gameState.mode = 'heal'; 
         let amt = (difficulty === 'easy') ? 30 : 55;
-        
         gameState.answer = Math.min(p.max, p.hp + amt); 
         gameState.altAnswer = p.hp + amt; 
-        
         const qStr = `Using ${type}. What is ${p.name}'s new HP?`;
         document.getElementById('question-text').innerText = qStr;
         document.getElementById('sum-v1').innerText = p.hp; document.getElementById('sum-v2').innerText = amt; document.getElementById('sum-op').innerText = "+";
-        
-        // FIXED POTION AUDIO
-        speak(qStr); 
-        resetTimer();
+        speak(qStr); resetTimer();
     }
 
     function press(n) { playSfx('press'); document.getElementById('display-answer').innerText += n; }
     function clearAns() { playSfx('press'); document.getElementById('display-answer').innerText = ""; }
 
     function submit() {
-        if(!gameState.active) return;
+        if(!gameState.active || document.getElementById('display-answer').innerText === "") return;
         const p = playerTeam[pIndex], o = oppTeam[oIndex];
         const val = parseInt(document.getElementById('display-answer').innerText);
         if(timerId) clearInterval(timerId);
@@ -316,17 +322,7 @@
     }
 
     function updateHPBars() { ['p', 'o'].forEach(s => { const char = (s === 'p' ? playerTeam[pIndex] : oppTeam[oIndex]); if(!char) return; const fill = document.getElementById(`${s}-fill`); const perc = (char.hp/char.max)*100; fill.style.width = perc + "%"; fill.style.backgroundColor = perc > 50 ? "#2ecc71" : (perc > 20 ? "#f1c40f" : "#e74c3c"); document.getElementById(`${s}-hp-text`).innerText = Math.ceil(char.hp); }); }
-    
-    function resetTimer() { 
-        timeLeft = 20; 
-        if(timerId) clearInterval(timerId); 
-        timerId = setInterval(() => { 
-            timeLeft -= 0.1; 
-            document.getElementById('timer-fill').style.width = (timeLeft/20)*100 + "%"; 
-            if(timeLeft <= 0) { clearInterval(timerId); submit(); } 
-        }, 100); 
-    }
-
+    function resetTimer() { timeLeft = 20; if(timerId) clearInterval(timerId); timerId = setInterval(() => { timeLeft -= 0.1; document.getElementById('timer-fill').style.width = (timeLeft/20)*100 + "%"; if(timeLeft <= 0) { clearInterval(timerId); submit(); } }, 100); }
     function showPopText(t) { const el = document.createElement('div'); el.className = 'pop-text'; el.innerText = t; document.getElementById('fx-layer').appendChild(el); setTimeout(() => el.remove(), 1000); }
 </script>
 </body>
