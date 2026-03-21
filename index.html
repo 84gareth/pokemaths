@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="PokeMaths">
     
-    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIiB2aWV3Qm94PSIwIDAgMTgwIDE4MCI+CiAgPHJlY3Qgd2lkdGg9IjE4MCIgaGVpZ2h0PSIxODAiIGZpbGw9IiNEODU1MTQiLz4KICA8Y2lyY2xlIGN4PSI5MCIgY3k9IjkwIiByPSI4MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjgiLz4KICA8cGF0aCBkPSJNOTAgNTAgTDcwIDcwIEw3MCAxMTAgTDExMCAxMTAgTDExMCA3MCBaIiBmaWxsPSIjZmZmIi8+CiAgPHBhdGggZD0iTTcwIDg1IEw1NSA4NSBMNTUgMTA1IEw3MCAxMDUgWiIgZmlsbD0iI2ZmZiIvPgogIDxwYXRoIGQ9Ik0xMTAgODUgTDEyNSA4NSBMMTI1IDEwNSBMMTEwIDEwNSBaIiBmaWxsPSIjZmZmIi8+Cjwvc3ZnPg==">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-viii/sword-shield/2.png">
     
     <title>PokeMaths</title>
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Sniglet&display=swap" rel="stylesheet">
@@ -32,7 +32,7 @@
         .ball-proper::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 6px; height: 6px; background: white; border: 1.5px solid #333; border-radius: 50%; z-index: 2; }
         .ball-proper.spent { filter: grayscale(1) brightness(0.2); opacity: 0.5; }
 
-        /* CARD HEADER */
+        /* CARD HEADER (TCG STYLE) */
         .card { flex: 1; display: flex; flex-direction: column; border-radius: 12px; padding: 4px; border: 4px solid #f1c40f; background: #fff; position: relative; overflow: hidden; transition: transform 0.2s, background-color 0.5s; }
         .tcg-hp-container { flex-shrink: 0; display: flex; flex-direction: column; background: rgba(0,0,0,0.85); border-radius: 8px; padding: 4px 8px; border: 1.5px solid #fff; margin-bottom: 2px; }
         .hp-header { display: flex; justify-content: space-between; align-items: center; width: 100%; }
@@ -168,7 +168,7 @@
     const pre = ["THUNDER", "FIRE", "HYDRO", "MYSTIC", "SOLAR", "DRAGON", "ICE", "SHADOW", "IRON", "QUICK"];
     const suf = ["BLAST", "PUNCH", "SLASH", "BEAM", "STRIKE", "KICK", "WAVE", "STORM", "CRUSH", "BOLT"];
     const typeBgs = { fire: "#eb3b5a", water: "#4b7bec", grass: "#20bf6b", electric: "#f7b731", psychic: "#a55eea", dragon: "#8854d0", ice: "#45aaf2", bug: "#26de81" };
-    const phonetics = { "RAYQUAZA": "Ray quay zah", "MEWTWO": "Mew two", "KYOGRE": "Ky ogre", "MIRAIDON": "Me rye don", "GHOLDENGO": "Gold en go", "TINKATON": "Tink a ton" };
+    const phonetics = { "RAYQUAZA": "Ray quay zah", "MEWTWO": "Mew two", "KYOGRE": "Ky ogre", "MIRAIDON": "Me rye don", "GHOLDENGO": "Gold en go", "TINKATON": "Tink a ton", "CERULEDGE": "Seh roo ledge" };
 
     let playerTeam = [], oppTeam = [], pIndex = 0, oIndex = 0, gameState = { active: false, mode: 'attack', answer: 0, altAnswer: null };
 
