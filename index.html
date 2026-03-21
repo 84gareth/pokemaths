@@ -7,7 +7,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="PokeMaths">
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball-pouch.png">
+    
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/ultra-ball.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/ultra-ball.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/ultra-ball.png">
     
     <title>PokeMaths</title>
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Sniglet&display=swap" rel="stylesheet">
@@ -204,14 +207,19 @@
         const getV = () => (difficulty === 'easy') ? (Math.floor(Math.random()*3)+2)*10 : (Math.floor(Math.random()*20)+30);
         if (!p.moves.length) p.moves = [{icon: getR(icons), name: `${getR(pre)} ${getR(suf)}`, dmg: getV()}, {icon: getR(icons), name: `${getR(pre)} ${getR(suf)}`, dmg: getV() + 5}];
         if (!o.moves.length) o.moves = [{icon: getR(icons), name: `${getR(pre)} ${getR(suf)}`, dmg: getV()}, {icon: getR(icons), name: `${getR(pre)} ${getR(suf)}`, dmg: getV() + 5}];
+        
         document.getElementById(`p-card`).style.backgroundColor = p.bg;
-        document.getElementById(`p-img`).src = p.img; document.getElementById(`p-name`).innerText = p.name;
+        document.getElementById(`p-img`).src = p.img; 
+        document.getElementById(`p-name`).innerText = p.name;
         document.getElementById(`p-hp-text`).innerText = Math.ceil(p.hp);
         document.getElementById(`p-moves`).innerHTML = p.moves.map(m => `<div class="move-row"><span>${m.icon} ${m.name}</span><span>-${m.dmg} HP</span></div>`).join('');
+        
         document.getElementById(`o-card`).style.backgroundColor = o.bg;
-        document.getElementById(`o-img`).src = o.img; document.getElementById(`o-name`).innerText = o.name;
+        document.getElementById(`o-img`).src = o.img; 
+        document.getElementById(`o-name`).innerText = o.name;
         document.getElementById(`o-hp-text`).innerText = Math.ceil(o.hp);
         document.getElementById(`o-moves`).innerHTML = o.moves.map(m => `<div class="move-row"><span>${m.icon} ${m.name}</span><span>-${m.dmg} HP</span></div>`).join('');
+        
         const pB = document.getElementById('p-team-tracker').children;
         const oB = document.getElementById('o-team-tracker').children;
         for(let i=0; i<3; i++) { pB[i].className = i < pIndex ? 'ball-proper spent' : 'ball-proper'; oB[i].className = i < oIndex ? 'ball-proper spent' : 'ball-proper'; }
