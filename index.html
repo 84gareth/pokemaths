@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="PokeMaths">
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball-pouch.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball-pouch.png">
     
     <title>PokeMaths</title>
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Sniglet&display=swap" rel="stylesheet">
@@ -28,10 +28,10 @@
         .team-tracker { display: flex; justify-content: center; gap: 6px; margin-bottom: 4px; height: 24px; }
         .ball-proper { width: 22px; height: 22px; background: white; border-radius: 50%; border: 2px solid #333; position: relative; overflow: hidden; box-shadow: 0 3px 6px rgba(0,0,0,0.4); }
         .ball-proper::before { content: ""; position: absolute; top: 0; width: 100%; height: 50%; background: #eb4d4b; border-bottom: 2px solid #333; }
-        .ball-proper::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 6px; height: 6px; background: white; border: 1.5px solid #333; border-radius: 50%; z-index: 2; }
+        .ball-proper::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 6px; height: 6px; background: white; border: 2px solid #333; border-radius: 50%; z-index: 2; }
         .ball-proper.spent { filter: grayscale(1) brightness(0.2); opacity: 0.5; }
 
-        /* CARD HEADER */
+        /* CARD HEADER (TCG STYLE) */
         .card { flex: 1; display: flex; flex-direction: column; border-radius: 12px; padding: 4px; border: 4px solid #f1c40f; background: #fff; position: relative; overflow: hidden; transition: transform 0.2s, background-color 0.5s; }
         .tcg-hp-container { flex-shrink: 0; display: flex; flex-direction: column; background: rgba(0,0,0,0.85); border-radius: 8px; padding: 4px 8px; border: 1.5px solid #fff; margin-bottom: 2px; }
         .hp-header { display: flex; justify-content: space-between; align-items: center; width: 100%; }
@@ -62,7 +62,7 @@
         #sum-box { flex: 0 0 115px; background: #fff; border: 4px solid #e74c3c; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Courier New', monospace; font-size: 1.8rem; color: #333; position: relative; }
         .sum-symbol { position: absolute; left: 10px; color: #e74c3c; font-size: 2rem; }
 
-        /* CONTROLS AREA - RE-STABILIZED FLEXBOX */
+        /* CONTROLS (HORIZONTAL MASTER LAYOUT) */
         #controls-area { height: 46vh; background: linear-gradient(180deg, #0984e3 0%, #2980b9 100%); border-top: 5px solid #f1c40f; display: flex; flex-direction: row; align-items: stretch; justify-content: center; padding: 10px; border-radius: 25px 25px 0 0; gap: 10px; padding-bottom: env(safe-area-inset-bottom); }
         
         #potion-belt { display: flex; flex-direction: column; gap: 8px; width: 95px; flex-shrink: 0; }
@@ -88,13 +88,12 @@
 </head>
 <body>
     <div id="overlay">
-        <h1 style="font-family: var(--font-title); font-size: 2.5rem; color: #ffcb05; text-shadow: 4px 4px #2a75bb;">POKEMATHS</h1>
+        <h1 style="font-family: var(--font-title); font-size: 2.8rem; color: #ffcb05; text-shadow: 4px 4px #2a75bb;">POKEMATHS</h1>
         <div class="diff-row">
             <div class="diff-card" onclick="startGame('easy')"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png"><h3>EASY</h3></div>
             <div class="diff-card" onclick="startGame('medium')"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png"><h3>MED</h3></div>
             <div class="diff-card" onclick="startGame('hard')"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png"><h3>HARD</h3></div>
         </div>
-        <p style="margin-top:20px; font-size:0.9rem; color:#ffcb05; font-weight:bold;">Share > 'Add to Home Screen' to play!</p>
     </div>
 
     <div id="result-screen" style="display:none;">
@@ -168,7 +167,7 @@
     const pre = ["THUNDER", "FIRE", "HYDRO", "MYSTIC", "SOLAR", "DRAGON", "ICE", "SHADOW", "IRON", "QUICK"];
     const suf = ["BLAST", "PUNCH", "SLASH", "BEAM", "STRIKE", "KICK", "WAVE", "STORM", "CRUSH", "BOLT"];
     const typeBgs = { fire: "#eb3b5a", water: "#4b7bec", grass: "#20bf6b", electric: "#f7b731", psychic: "#a55eea", dragon: "#8854d0", ice: "#45aaf2", bug: "#26de81" };
-    const phonetics = { "RAYQUAZA": "Ray quay zah", "MEWTWO": "Mew two", "KYOGRE": "Ky ogre", "MIRAIDON": "Me rye don", "GHOLDENGO": "Gold en go" };
+    const phonetics = { "RAYQUAZA": "Ray quay zah", "MEWTWO": "Mew two", "KYOGRE": "Ky ogre", "MIRAIDON": "Me rye don", "GHOLDENGO": "Gold en go", "TINKATON": "Tink a ton", "CERULEDGE": "Seh roo ledge" };
 
     let playerTeam = [], oppTeam = [], pIndex = 0, oIndex = 0, gameState = { active: false, mode: 'attack', answer: 0, altAnswer: null };
 
@@ -185,16 +184,19 @@
     function playSfx(type) {
         if (!audioUnlocked) return;
         const now = audioCtx.currentTime;
-        const osc = audioCtx.createOscillator(); const g = audioCtx.createGain();
         if (type === 'hit') {
             [660, 880, 1100].forEach((f, i) => { const o = audioCtx.createOscillator(); const gn = audioCtx.createGain(); o.type='sine'; o.frequency.setValueAtTime(f, now+(i*0.08)); gn.gain.setValueAtTime(0.1, now+(i*0.08)); gn.gain.exponentialRampToValueAtTime(0.0001, now+(i*0.08)+0.2); o.connect(gn); gn.connect(audioCtx.destination); o.start(now+(i*0.08)); o.stop(now+(i*0.08)+0.2); });
         } else if (type === 'miss') {
+            const osc = audioCtx.createOscillator(); const g = audioCtx.createGain();
             osc.type='square'; osc.frequency.setValueAtTime(100, now); g.gain.setValueAtTime(0.2, now); g.gain.linearRampToValueAtTime(0, now+0.3); osc.connect(g); g.connect(audioCtx.destination); osc.start(); osc.stop(now+0.3);
         } else if (type === 'heal') {
+            const osc = audioCtx.createOscillator(); const g = audioCtx.createGain();
             osc.type='sine'; osc.frequency.setValueAtTime(400, now); osc.frequency.exponentialRampToValueAtTime(1200, now+0.4); g.gain.setValueAtTime(0.1, now); g.gain.linearRampToValueAtTime(0, now+0.4); osc.connect(g); g.connect(audioCtx.destination); osc.start(); osc.stop(now+0.4);
         } else if (type === 'ko') {
+            const osc = audioCtx.createOscillator(); const g = audioCtx.createGain();
             osc.type='sawtooth'; osc.frequency.setValueAtTime(200, now); osc.frequency.linearRampToValueAtTime(50, now+0.6); g.gain.setValueAtTime(0.1, now); g.gain.linearRampToValueAtTime(0, now+0.6); osc.connect(g); g.connect(audioCtx.destination); osc.start(); osc.stop(now+0.6);
         } else if (type === 'press') {
+            const osc = audioCtx.createOscillator(); const g = audioCtx.createGain();
             osc.type='square'; osc.frequency.setValueAtTime(600, now); g.gain.setValueAtTime(0.05, now); g.gain.linearRampToValueAtTime(0, now+0.05); osc.connect(g); g.connect(audioCtx.destination); osc.start(); osc.stop(now+0.05);
         }
     }
@@ -276,7 +278,7 @@
     function clearAns() { playSfx('press'); document.getElementById('display-answer').innerText = ""; }
 
     function submit() {
-        if(!gameState.active || document.getElementById('display-answer').innerText === "") return;
+        if(!gameState.active) return;
         const p = playerTeam[pIndex], o = oppTeam[oIndex];
         const val = parseInt(document.getElementById('display-answer').innerText);
         if(timerId) clearInterval(timerId);
