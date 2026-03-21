@@ -9,6 +9,8 @@
     <meta name="apple-mobile-web-app-title" content="PokeMaths">
     
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/great-ball.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/great-ball.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/great-ball.png">
     
     <title>PokeMaths</title>
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Sniglet&display=swap" rel="stylesheet">
@@ -60,10 +62,14 @@
         .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; flex: 3; }
         .num-btn { background: #f5f6fa; border: none; border-radius: 12px; font-size: 1.6rem; font-weight: bold; box-shadow: 0 4.5px 0 #bdc3c7; color: #2f3640; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         
-        .btn-submit { flex: 1.2; background: #eb4d4b; border-radius: 20px; border: 5px solid white; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 6px 0 #c0392b; }
-        .pokeball-icon { width: 52px; height: 52px; background: white; border-radius: 50%; border: 3.5px solid #333; position: relative; overflow: hidden; animation: pulsePoke 2s infinite; }
-        .pokeball-icon::before { content: ""; position: absolute; top: 0; width: 100%; height: 50%; background: #eb4d4b; border-bottom: 3.5px solid #333; }
-        .pokeball-icon::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 16px; height: 14px; background: white; border: 3.5px solid #333; border-radius: 50%; z-index: 2; }
+        .btn-submit { flex: 1.2; background: #3498db; border-radius: 20px; border: 5px solid white; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 6px 0 #2980b9; }
+        
+        /* GREAT BALL THEMED SUBMIT ICON */
+        .greatball-icon { width: 52px; height: 52px; background: white; border-radius: 50%; border: 3.5px solid #333; position: relative; overflow: hidden; animation: pulsePoke 2s infinite; }
+        .greatball-icon::before { content: ""; position: absolute; top: 0; width: 100%; height: 50%; background: #3498db; border-bottom: 3.5px solid #333; }
+        /* Red ridges for the Great Ball */
+        .greatball-icon::after { content: ""; position: absolute; top: 5%; left: 10%; width: 20%; height: 40%; background: #e74c3c; border-radius: 5px; transform: rotate(-20deg); box-shadow: 35px 0 0 #e74c3c; z-index: 1; }
+        .gb-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 14px; height: 14px; background: white; border: 3.5px solid #333; border-radius: 50%; z-index: 2; }
 
         @keyframes pulsePoke { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
         #question-area { height: 16vh; display: flex; align-items: stretch; justify-content: center; padding: 4px; gap: 6px; }
@@ -122,12 +128,13 @@
                     <button class="num-btn" onclick="press(7)">7</button><button class="num-btn" onclick="press(8)">8</button><button class="num-btn" onclick="press(9)">9</button>
                     <button class="num-btn" onclick="clearAns()" style="background:#7f8c8d; color:#fff">C</button><button class="num-btn" onclick="press(0)">0</button>
                 </div>
-                <div onclick="submit()" class="btn-submit"><div class="pokeball-icon"></div></div>
+                <div onclick="submit()" class="btn-submit"><div class="greatball-icon"><div class="gb-center"></div></div></div>
             </div>
         </div>
     </div>
 
 <script>
+    // Logic from Master Baseline V14.8
     let audioCtx, voice = window.speechSynthesis, audioUnlocked = false, timerId, difficulty, score = 0, timeLeft = 20;
     const icons = ["🔥", "💧", "🌿", "⚡", "👁️", "🐲", "👊", "❄️", "🌑", "🐝"];
     const pre = ["THUNDER", "FIRE", "HYDRO", "MYSTIC", "SOLAR", "DRAGON", "ICE", "SHADOW", "IRON", "QUICK"];
