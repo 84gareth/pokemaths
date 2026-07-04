@@ -16,7 +16,9 @@
             --type-p1: #ff8a50; --type-p2: #c62828; --type-o1: #9fa8da; --type-o2: #283593;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-main); user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
-        body { background: linear-gradient(180deg, #4b8fe0 0%, #2a5da8 100%); color: #fff; height: 100vh; height: 100dvh; width: 100vw; display: flex; flex-direction: column; overflow: hidden; }
+        html { height: 100%; height: -webkit-fill-available; background: #2a5da8; }
+        body { background: linear-gradient(180deg, #4b8fe0 0%, #2a5da8 100%); color: #fff; width: 100vw; display: flex; flex-direction: column; overflow: hidden;
+               height: 100vh; height: -webkit-fill-available; height: 100dvh; height: var(--app-h, 100dvh); }
 
         #overlay, #end-screen { position: fixed; inset: 0; background: #3d7dca; z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 15px; overflow: hidden; }
         .sunburst { position: absolute; width: 250%; height: 250%; background: repeating-conic-gradient(from 0deg, #3d7dca 0deg 20deg, #4b8fe0 20deg 40deg); animation: rotateSun 24s linear infinite; opacity: 0.7; }
@@ -42,11 +44,14 @@
         .corner-btn:active { transform: scale(.88); }
         #home-btn { left: 12px; background: linear-gradient(#fff, #dfe6ee); display: flex; align-items: center; justify-content: center; }
         #home-btn svg { width: 24px; height: 24px; fill: #333; }
-        #mute-btn { left: 66px; background: linear-gradient(#fff, #dfe6ee); display: flex; align-items: center; justify-content: center; font-size: 21px; }
+        #stats-btn { right: 66px; background: linear-gradient(#fff, #dfe6ee); display: flex; align-items: center; justify-content: center; }
         #dex-btn { right: 12px; background: white; overflow: hidden; }
         #dex-btn::before { content: ''; width: 100%; height: 5px; background: #333; position: absolute; top: 50%; left: 0; transform: translateY(-50%); z-index: 1; }
         #dex-btn::after { content: ''; width: 100%; height: 50%; background: #ff0000; position: absolute; top: 0; border-bottom: 3px solid #333; }
         #dex-btn div { width: 12px; height: 12px; background: white; border: 3px solid #333; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 5; }
+        #level-chip { position: fixed; top: calc(env(safe-area-inset-top, 8px) + 14px); left: 50%; transform: translateX(-50%); z-index: 1500; background: linear-gradient(#333, #111); border: 2.5px solid var(--poke-yellow); color: var(--poke-yellow); font-family: var(--font-title); font-size: 13px; padding: 7px 14px 3px; border-radius: 14px; display: none; white-space: nowrap; }
+        .diff-card { position: relative; }
+        .diff-card.last::after { content: 'LAST PLAYED'; position: absolute; top: -11px; left: 50%; transform: translateX(-50%); background: var(--poke-yellow); color: #333; font-family: var(--font-main); font-weight: 800; font-size: 9px; padding: 2px 8px; border-radius: 8px; border: 2px solid #d4a017; white-space: nowrap; }
 
         #arena { height: 33vh; display: flex; justify-content: center; align-items: stretch; gap: 8px; padding: 6px 6px 2px; opacity: 0; transition: opacity 0.5s; }
         .card-slot { flex: 1; max-width: 280px; display: flex; flex-direction: column; }
@@ -77,15 +82,19 @@
 
         .move-list { flex-shrink: 0; background: linear-gradient(180deg, #33418f, #1f2a63); padding: 4px 7px; border-radius: 9px; border: 1.5px solid #8fa3e8; min-height: 36px; display: flex; flex-direction: column; justify-content: center; gap: 2px; box-shadow: inset 0 1px 3px rgba(0,0,0,.35); }
         .move-row { display: flex; justify-content: space-between; align-items: center; color: #eef2ff; font-weight: 800; font-size: 0.6rem; }
+        .move-row .mv { display: inline-flex; align-items: center; gap: 4px; min-width: 0; overflow: hidden; white-space: nowrap; }
+        .move-row .mv svg { flex-shrink: 0; }
         .move-dmg { font-family: var(--font-title); color: var(--poke-yellow); font-size: 0.68rem; }
 
         #timer-container { width: 94%; height: 12px; background: #222; margin: 4px auto; border-radius: 10px; border: 2px solid #fff; overflow: hidden; flex-shrink: 0; }
         .timer-fill { height: 100%; width: 100%; background: linear-gradient(90deg, #00e5ff, #00ffcc); }
         #question-area { height: 15vh; display: flex; align-items: stretch; justify-content: center; padding: 4px 8px; gap: 8px; }
         #question { flex: 2; background: linear-gradient(#ffffff, #f2ecdc); border: 4px solid #d4a017; border-radius: 16px; display: flex; align-items: center; justify-content: center; padding: 6px 10px; color: #333; font-size: 0.92rem; text-align: center; font-weight: 800; line-height: 1.25; }
-        #sum-box { flex: 0 0 118px; background: linear-gradient(#333, #111); border: 3px solid #fff; border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 1.7rem; color: var(--poke-yellow); position: relative; font-family: var(--font-title); box-shadow: 0 3px 8px rgba(0,0,0,.35); }
-        .sum-symbol { position: absolute; left: 12px; color: #ff7043; font-size: 1.9rem; font-family: var(--font-title); }
-        #sum-box .sum-line { display: flex; width: 100%; justify-content: flex-end; padding-right: 16px; line-height: 1.15; }
+        #sum-box { flex: 0 0 128px; background: linear-gradient(#333, #111); border: 3px solid #fff; border-radius: 14px; display: flex; flex-direction: column; align-items: stretch; justify-content: center; color: var(--poke-yellow); font-family: var(--font-main); font-weight: 800; box-shadow: 0 3px 8px rgba(0,0,0,.35); padding: 4px 0; }
+        #sum-box .sum-line { display: flex; align-items: baseline; justify-content: flex-end; padding: 0 14px; font-size: 1.4rem; line-height: 1.18; font-variant-numeric: tabular-nums; }
+        #sum-box .sum-line .op { margin-right: auto; color: #ff7043; font-family: var(--font-title); font-size: 1.45rem; }
+        #sum-box .sum-line.rule { border-bottom: 3px solid var(--poke-yellow); padding-bottom: 2px; margin-bottom: 2px; }
+        #sum-box .sum-line.ans { color: #7dff9b; min-height: 1.45rem; }
 
         #controls-area { flex: 1; background: linear-gradient(180deg, #0984e3 0%, #2367a3 100%); border-top: 5px solid var(--poke-yellow); display: flex; flex-direction: row; align-items: stretch; justify-content: center; padding: 10px 10px calc(env(safe-area-inset-bottom, 8px) + 8px); border-radius: 25px 25px 0 0; gap: 10px; min-height: 0; position: relative; z-index: 1600; }
         #potion-belt { display: flex; flex-direction: column; gap: 8px; width: 100px; flex-shrink: 0; }
@@ -101,8 +110,6 @@
 
         #numpad-wrapper { flex: 1; display: flex; flex-direction: column; max-width: 450px; min-height: 0; }
         #display-answer { background: #fff; font-size: 1.8rem; width: 100%; border-radius: 12px; height: 44px; color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; border: 3px solid #d4a017; margin-bottom: 7px; flex-shrink: 0; position: relative; }
-        #streak-pips { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 17px; letter-spacing: 1px; color: #d9d2bd; }
-        #streak-pips.charged { animation: pipGlow .8s ease-in-out infinite alternate; }
         .pad-and-submit { display: flex; flex-direction: row; flex: 1; gap: 10px; min-height: 0; }
         .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; flex: 3; }
         .num-btn { background: linear-gradient(#ffffff, #e8ecf2); border: none; border-radius: 14px; font-size: 1.55rem; font-weight: 800; font-family: var(--font-main); color: #2f3640; cursor: pointer; box-shadow: 0 4px 0 #a9b4c0; transition: transform .06s; }
@@ -125,16 +132,16 @@
         #toast.show { animation: toastPop 1.6s ease forwards; }
 
         /* ---------- CATCH SCREEN ---------- */
-        #catch-screen { position: fixed; inset: 0; z-index: 1550; display: none; flex-direction: column; align-items: center; padding-top: calc(env(safe-area-inset-top, 10px) + 58px); background: radial-gradient(circle at 50% 30%, rgba(61,125,202,.94), rgba(8,15,38,.97) 72%); }
+        #catch-screen { position: fixed; left: 0; right: 0; top: 0; bottom: 0; z-index: 1550; display: none; flex-direction: column; align-items: center; justify-content: space-evenly; padding: calc(env(safe-area-inset-top, 10px) + 56px) 10px 4px; background: radial-gradient(circle at 50% 30%, rgba(61,125,202,.94), rgba(8,15,38,.97) 72%); }
         #catch-screen.open { display: flex; }
-        #catch-title { font-family: var(--font-title); font-size: 21px; color: var(--poke-yellow); text-shadow: 2px 2px 0 rgba(0,0,0,.5); margin-bottom: 8px; text-align: center; padding: 0 12px; }
-        #catch-img { height: 24vh; filter: grayscale(.5) brightness(.95) drop-shadow(0 0 24px rgba(255,255,255,.5)); transition: opacity .25s; }
+        #catch-title { font-family: var(--font-title); font-size: clamp(15px, 4.6vw, 21px); color: var(--poke-yellow); text-shadow: 2px 2px 0 rgba(0,0,0,.5); text-align: center; padding: 0 12px; flex-shrink: 0; }
+        #catch-img { max-height: 32%; min-height: 60px; flex-shrink: 1; object-fit: contain; filter: grayscale(.5) brightness(.95) drop-shadow(0 0 24px rgba(255,255,255,.5)); transition: opacity .25s; }
         #catch-img.escape { animation: escapeJump .85s ease; }
-        #catch-sum { font-family: var(--font-title); font-size: 34px; color: #fff; background: linear-gradient(#333, #111); border: 3px solid #fff; border-radius: 16px; padding: 10px 26px 6px; margin-top: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.45); }
-        #catch-timerbar { width: 70%; max-width: 320px; height: 10px; background: #222; border: 2px solid #fff; border-radius: 8px; overflow: hidden; margin-top: 12px; }
-        #catch-result { font-family: var(--font-title); font-size: 28px; margin-top: 12px; min-height: 38px; transform: scale(0); text-shadow: 2px 2px 0 rgba(0,0,0,.55); text-align: center; padding: 0 10px; }
+        #catch-sum { font-family: var(--font-title); font-size: clamp(22px, 7.5vw, 34px); color: #fff; background: linear-gradient(#333, #111); border: 3px solid #fff; border-radius: 16px; padding: 10px 22px 6px; box-shadow: 0 4px 12px rgba(0,0,0,.45); flex-shrink: 0; white-space: nowrap; }
+        #catch-timerbar { width: 70%; max-width: 320px; height: 10px; background: #222; border: 2px solid #fff; border-radius: 8px; overflow: hidden; flex-shrink: 0; }
+        #catch-result { font-family: var(--font-title); font-size: clamp(20px, 6.5vw, 28px); min-height: 30px; transform: scale(0); text-shadow: 2px 2px 0 rgba(0,0,0,.55); text-align: center; padding: 0 10px; flex-shrink: 0; }
         #catch-result.pop { animation: resultPop .5s cubic-bezier(.2,1.6,.4,1) forwards; }
-        #catch-sub { font-weight: 800; font-size: 15px; color: #cfe0ff; margin-top: 4px; min-height: 20px; }
+        #catch-sub { font-weight: 800; font-size: 14px; color: #cfe0ff; min-height: 18px; flex-shrink: 0; text-align: center; }
         #catch-ball { position: fixed; z-index: 1970; width: 56px; height: 56px; border-radius: 50%; border: 4px solid #222; background: linear-gradient(#ff3b3b 46%, #222 46%, #222 56%, #fff 56%); display: none; }
         #catch-ball::after { content:''; position:absolute; width: 13px; height: 13px; background:#fff; border: 4px solid #222; border-radius:50%; top:50%; left:50%; transform: translate(-50%,-50%); }
         #catch-ball.wob { animation: ballWobble .68s ease-in-out; }
@@ -145,6 +152,20 @@
         .dex-entry img { width: 52px; height: 52px; image-rendering: pixelated; }
         .dex-entry.locked img { filter: brightness(0); opacity: 0.5; }
         .dex-entry.shiny { border-color: var(--card-gold); background: linear-gradient(160deg, rgba(255,215,0,.35), rgba(255,255,255,.14)); }
+        .dex-entry { position: relative; cursor: pointer; }
+        .dex-entry.fresh { animation: freshGlow 1.2s ease-in-out infinite alternate; }
+        .dex-entry.fresh::after { content: '✨'; position: absolute; top: -6px; right: -4px; font-size: 15px; }
+        .stat-card { background: rgba(255,255,255,.13); border: 2px solid rgba(255,255,255,.25); border-radius: 16px; padding: 14px 8px 10px; display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center; }
+        .stat-emoji { font-size: 30px; line-height: 1; filter: drop-shadow(0 2px 2px rgba(0,0,0,.3)); }
+        .stat-num { font-family: var(--font-title); font-size: 24px; color: var(--poke-yellow); text-shadow: 1px 2px 0 rgba(0,0,0,.35); padding-top: 4px; }
+        .stat-label { font-size: 11px; font-weight: 800; opacity: .88; }
+        .detail-card { background: linear-gradient(175deg, #fffef6, #fdf6dc); color: #333; border-radius: 24px; border: 6px solid var(--card-gold); max-width: 300px; width: 82%; padding: 18px 16px; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,.5); position: relative; }
+        .detail-card img { width: 78%; max-height: 34vh; object-fit: contain; filter: drop-shadow(0 6px 8px rgba(0,0,0,.3)); }
+        #detail-x { position: absolute; top: 8px; right: 14px; font-size: 26px; cursor: pointer; color: #666; line-height: 1; }
+        #detail-name { font-family: var(--font-title); font-size: 24px; margin-top: 6px; }
+        #detail-type { display: inline-block; margin-top: 8px; padding: 5px 16px 2px; border-radius: 12px; color: #fff; font-family: var(--font-title); font-size: 13px; letter-spacing: 1px; }
+        #detail-flair { margin-top: 8px; font-weight: 800; font-size: 14px; color: #b8860b; min-height: 18px; }
+        @keyframes freshGlow { from { box-shadow: 0 0 4px 1px rgba(255,215,0,.4); } to { box-shadow: 0 0 12px 4px rgba(255,215,0,.85); } }
         .dex-name { font-size: 8.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .3px; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .dex-entry.locked .dex-name { opacity: .45; }
         #dex-footer { padding: 10px 0 calc(env(safe-area-inset-bottom, 10px) + 8px); border-top: 2px solid white; display: flex; justify-content: center; }
@@ -172,7 +193,6 @@
         @keyframes ballWobble { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-24deg) translateX(-4px); } 50% { transform: rotate(22deg) translateX(4px); } 80% { transform: rotate(-12deg); } }
         @keyframes resultPop { 0% { transform: scale(0); } 70% { transform: scale(1.15); } 100% { transform: scale(1); } }
         @keyframes escapeJump { 0% { transform: translateY(0); } 25% { transform: translateY(-46px) rotate(-8deg); } 45% { transform: translateY(0); } 62% { transform: translateY(-22px) rotate(6deg); } 80% { transform: translateY(0); } }
-        @keyframes pipGlow { from { text-shadow: 0 0 4px #ffd700; } to { text-shadow: 0 0 14px #ffd700, 0 0 22px #ff9800; } }
         @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; } }
     </style>
 </head>
@@ -198,6 +218,7 @@
         <div class="float-ball" style="top:80%; left:12%; animation-delay:-4s; width:30px; height:30px;"></div>
         <h1 class="big-logo">PokeMaths</h1>
         <div class="tagline">Battle with your brain!</div>
+        <button id="resume-btn" class="end-btn btn-gold" style="display:none; position:relative; z-index:5; margin: 0 0 16px; width: 230px;" onclick="resumeBattle()">▶ RESUME BATTLE</button>
         <div class="diff-row">
             <div class="diff-card" onclick="startGame('easy')"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png" alt="Charmander">EASY<div class="diff-sub">No timer!</div></div>
             <div class="diff-card" onclick="startGame('medium')"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png" alt="Charmeleon">MEDIUM<div class="diff-sub">Beat the clock</div></div>
@@ -216,15 +237,29 @@
     </div>
 
     <div id="home-btn" class="corner-btn" onclick="goHome()" style="display:none;"><svg viewBox="0 0 24 24"><path d="M10 19l-7-7 7-7v4h8a3 3 0 0 1 3 3v5h-3v-4a1 1 0 0 0-1-1h-7v7z"/></svg></div>
-    <div id="mute-btn" class="corner-btn" onclick="toggleMusic()" style="display:none;">🔊</div>
+    <div id="stats-btn" class="corner-btn" onclick="openStats()" style="display:none;"><svg width="22" height="22" viewBox="0 0 24 24"><rect x="3" y="12" width="5" height="9" rx="1.5" fill="#3d7dca"/><rect x="9.5" y="6" width="5" height="15" rx="1.5" fill="#ffcb05" stroke="#b8860b" stroke-width="1"/><rect x="16" y="9" width="5" height="12" rx="1.5" fill="#dc0a2d"/></svg></div>
     <div id="dex-btn" class="corner-btn" onclick="openDex()" style="display:none;"><div></div></div>
+    <div id="level-chip">TRAINER LV 1</div>
 
+    <div id="stats-view" style="position: fixed; inset: 0; padding: calc(env(safe-area-inset-top, 15px) + 5px) 20px calc(env(safe-area-inset-bottom, 10px) + 10px); background: linear-gradient(180deg, #2a5da8, #14315e); z-index: 2100; display: none; flex-direction: column; color: white;">
+        <div style="display:flex; justify-content: space-between; align-items: center; border-bottom: 2px solid white; padding-bottom: 10px;"><h2 style="margin:0; font-family: var(--font-title);">TRAINER STATS</h2><div onclick="closeStats()" style="font-size:30px; cursor:pointer; line-height:1;">✕</div></div>
+        <div id="stats-grid" style="flex:1; overflow-y:auto; display:grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 16px 0; align-content: start;"></div>
+    </div>
     <div id="pokedex-view">
         <div style="display:flex; justify-content: space-between; align-items: center; border-bottom: 2px solid white; padding-bottom: 10px;"><h2 id="dex-title" style="margin:0; font-family: var(--font-title);">POKEDEX</h2><div onclick="closeDex()" style="font-size:30px; cursor:pointer; line-height:1;">✕</div></div>
         <div id="pokedex-list"></div>
         <div id="dex-footer"><div id="dex-reset" onclick="askReset()"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></div></div>
     </div>
 
+    <div id="detail-modal" class="modal-shell" onclick="closeDetail()">
+        <div class="detail-card" onclick="event.stopPropagation()">
+            <div id="detail-x" onclick="closeDetail()">✕</div>
+            <img id="detail-img" alt="">
+            <div id="detail-name"></div>
+            <div id="detail-type"></div>
+            <div id="detail-flair"></div>
+        </div>
+    </div>
     <div id="confirm-modal" class="modal-shell">
         <div class="confirm-box">
             <h3>Reset Pokédex?</h3>
@@ -260,9 +295,9 @@
     <div id="question-area">
         <div id="question">Ready?</div>
         <div id="sum-box">
-            <span id="sum-op" class="sum-symbol"></span>
             <div class="sum-line"><span id="sum-v1"></span></div>
-            <div class="sum-line"><span id="sum-v2"></span></div>
+            <div class="sum-line rule"><span id="sum-op" class="op"></span><span id="sum-v2"></span></div>
+            <div class="sum-line ans"><span id="sum-ans"></span></div>
         </div>
     </div>
     <div id="controls-area">
@@ -272,7 +307,7 @@
             <div class="potion-btn p-hyper" id="btn-hyp" onclick="useHeal('Hyper Potion')"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/hyper-potion.png" alt="Hyper Potion"><div class="potion-text">HYPER POTION</div><div class="potion-val" id="val-hyp"></div></div>
         </div>
         <div id="numpad-wrapper">
-            <div id="display-answer"><span id="answer-text"></span><span id="streak-pips"></span></div>
+            <div id="display-answer"><span id="answer-text"></span></div>
             <div class="pad-and-submit">
                 <div class="numpad">
                     <button class="num-btn" onclick="press(1)">1</button><button class="num-btn" onclick="press(2)">2</button><button class="num-btn" onclick="press(3)">3</button>
@@ -291,7 +326,32 @@ const rosterRaw = "1:BULBASAUR:g,3:VENUSAUR:g,4:CHARMANDER:f,6:CHARIZARD:f,7:SQU
 const roster = rosterRaw.split(',').map(s => { const p = s.split(':'); return { id: parseInt(p[0]), name: p[1], type: TYPE_KEY[p[2]] }; });
 
 /* Real moves by type (used by everyone) + hand-curated sets for the stars */
-const T = { fire:"🔥", water:"💧", grass:"🌿", electric:"⚡", psychic:"👁️", ghost:"👻", dragon:"🐲", fighting:"👊", ice:"❄️", normal:"⭐", dark:"🌙", rock:"🪨", steel:"⚙️", fairy:"✨", flying:"🌪️", poison:"💜", ground:"⛰️", bug:"🐛" };
+/* Type icons drawn in the style of the games' move-type symbols (white glyph on a type-coloured disc) */
+const TYPE_GLYPHS = {
+    fire: '<path d="M10 3.2c1.6 2.6 3.9 3.7 3.9 7a3.9 3.9 0 0 1-7.8 0c0-1.8 1.3-2.5 2-4 .7.8 1.1 1.5 1.1 2.5.8-1.5.8-3.4.8-5.5Z"/>',
+    water: '<path d="M10 3.2c2.7 3.6 4.6 5.4 4.6 8.1a4.6 4.6 0 0 1-9.2 0c0-2.7 1.9-4.5 4.6-8.1Z"/>',
+    grass: '<path d="M15.3 4.7c-6.6 0-9.8 3.4-10.3 10.3 6.9-.5 10.3-3.7 10.3-10.3Z"/>',
+    electric: '<path d="M11.4 2.8 5.8 11h3.1l-1 6.2 6.3-8.4h-3.5l.7-6Z"/>',
+    psychic: '<ellipse cx="10" cy="10" rx="6.2" ry="4.1"/><circle cx="10" cy="10" r="2" class="hole"/>',
+    ghost: '<path d="M10 3.6a5 5 0 0 1 5 5v6.6l-2-1.5-1.5 1.5-1.5-1.5-1.5 1.5L7 14.2l-2 1.5V8.6a5 5 0 0 1 5-5Z"/>',
+    dragon: '<path d="M10 2.8 16.6 10 10 17.2 3.4 10Z"/><path d="M10 6.4 13.2 10 10 13.6 6.8 10Z" class="hole"/>',
+    fighting: '<path d="M10 2.4 11.7 7.6 17 8.4l-3.8 3.6.9 5.3L10 14.8l-4.1 2.5.9-5.3L3 8.4l5.3-.8Z"/>',
+    ice: '<g class="strokes"><line x1="10" y1="3.4" x2="10" y2="16.6"/><line x1="4.3" y1="6.7" x2="15.7" y2="13.3"/><line x1="15.7" y1="6.7" x2="4.3" y2="13.3"/></g>',
+    normal: '<circle cx="10" cy="10" r="5" class="ring"/>',
+    dark: '<path d="M14 10a5.6 5.6 0 1 1-5.4-5.6A4.4 4.4 0 0 0 14 10Z"/>',
+    rock: '<path d="M6 5.8 12 4.3l4.2 3.7-1 6-6.7 1.6L4.3 11Z"/>',
+    steel: '<path d="M10 2.9 16 6.4v7.2L10 17.1 4 13.6V6.4Z"/><circle cx="10" cy="10" r="2.2" class="hole"/>',
+    fairy: '<path d="M10 2.6 11.7 8.3 17.4 10 11.7 11.7 10 17.4 8.3 11.7 2.6 10 8.3 8.3Z"/>',
+    flying: '<path d="M16.4 5.4C11 4.4 5.8 6.6 3.6 13.2c5.5.6 10.7-1.9 12.8-7.8Z"/>',
+    poison: '<circle cx="8" cy="8.4" r="3.4"/><circle cx="13.2" cy="11" r="2.5"/><circle cx="8.8" cy="14" r="1.8"/>',
+    ground: '<path d="M2.8 15.4 8 6.6l3 5 2.6-3.6 3.6 7.4Z"/>',
+    bug: '<circle cx="10" cy="11.6" r="4.4"/><g class="strokes thin"><path d="M8 8.2C7 6.4 6 5.4 4.6 4.8" fill="none"/><path d="M12 8.2c1-1.8 2-2.8 3.4-3.4" fill="none"/></g>'
+};
+function typeIcon(type, size = 12) {
+    const th = typeThemes[type] || typeThemes.normal;
+    const glyph = TYPE_GLYPHS[type] || TYPE_GLYPHS.normal;
+    return `<svg width="${size}" height="${size}" viewBox="0 0 20 20" style="vertical-align:-1px"><circle cx="10" cy="10" r="10" fill="${th.c2}"/><g fill="#fff" style="stroke:none">${glyph.replace(/class="hole"/g, `fill="${th.c2}"`).replace(/class="ring"/g, `fill="none" stroke="#fff" stroke-width="2.6"`).replace(/class="strokes thin"/g, `stroke="#fff" stroke-width="1.6" fill="none"`).replace(/class="strokes"/g, `stroke="#fff" stroke-width="2.1" fill="none"`)}</g></svg>`;
+}
 const typeMovePools = {
     grass:    [["Vine Whip","grass"],["Razor Leaf","grass"],["Solar Beam","grass"],["Mega Drain","grass"]],
     fire:     [["Ember","fire"],["Flamethrower","fire"],["Fire Spin","fire"],["Flame Wheel","fire"]],
@@ -382,8 +442,18 @@ let gameState = { mode: 'idle', answer: 0, rawHealingResult: 0, currentMove: nul
 let curHeals = { reg: 20, sup: 45, hyp: 70 };
 let potionsUsed = { reg: false, sup: false, hyp: false };
 let caughtThisBattle = [], mistakesThisBattle = 0;
-let streak = 0, superReady = false;
 let dex = JSON.parse(localStorage.getItem('pmaths_dex_v1')) || [];
+let wins = parseInt(localStorage.getItem('pmaths_wins') || '0', 10);
+let stats = Object.assign({ a: 0, c: 0, wa: 0, wc: 0, wk: '', bs: 0, ccs: 0, cbs: 0, pb: 0 }, JSON.parse(localStorage.getItem('pmaths_stats')) || {});
+let consecRight = 0, consecWrong = 0, retryDmgBase = null;
+const todayStr = () => new Date().toDateString();
+function weekKey() { const d = new Date(); d.setDate(d.getDate() - (d.getDay() + 6) % 7); return d.toDateString(); }
+function recordAnswer(ok) {
+    if (stats.wk !== weekKey()) { stats.wk = weekKey(); stats.wa = 0; stats.wc = 0; }
+    stats.a++; stats.wa++; if (ok) { stats.c++; stats.wc++; consecRight++; consecWrong = 0; stats.bs = Math.max(stats.bs, consecRight); } else { consecWrong++; consecRight = 0; }
+    localStorage.setItem('pmaths_stats', JSON.stringify(stats));
+}
+function updateLevelChip() { document.getElementById('level-chip').innerText = `TRAINER LV ${wins + 1}`; }
 let shinyDex = JSON.parse(localStorage.getItem('pmaths_shiny_v1')) || [];
 const synth = window.speechSynthesis;
 const ART = i => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${i}.png`;
@@ -392,6 +462,18 @@ const SPRITE_SM = i => `https://raw.githubusercontent.com/PokeAPI/sprites/master
 const SPRITE_SMS = i => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${i}.png`;
 const FALLBACK_IMG = "data:image/svg+xml," + encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='44' fill='#fff' stroke='#333' stroke-width='5'/><path d='M6 50 a44 44 0 0 1 88 0 Z' fill='#e53935'/><rect x='6' y='46' width='88' height='8' fill='#333'/><circle cx='50' cy='50' r='13' fill='#fff' stroke='#333' stroke-width='5'/></svg>`);
 function safeImg(img, altSrc) { img.onerror = () => { if (altSrc) { const a = altSrc; altSrc = null; img.src = a; return; } img.onerror = null; img.src = FALLBACK_IMG; }; }
+/* Image cache: serve sprites from CacheStorage after first view, so the dex opens instantly and works offline */
+const canCache = typeof caches !== 'undefined' && window.isSecureContext;
+async function loadImg(img, url, fallbackUrl) {
+    safeImg(img, fallbackUrl);
+    if (!canCache) { img.src = url; return; }
+    try {
+        const c = await caches.open('pmaths-img-v1');
+        let r = await c.match(url);
+        if (!r) { const f = await fetch(url, { mode: 'cors' }); if (!f.ok) throw 0; await c.put(url, f.clone()); r = await c.match(url); }
+        img.src = URL.createObjectURL(await r.blob());
+    } catch (e) { img.src = url; }
+}
 ['p-img', 'o-img', 'catch-img'].forEach(id => safeImg(document.getElementById(id)));
 
 /* ================= VOICE ================= */
@@ -444,37 +526,21 @@ function playSfx(type) {
     if (type === 'gotcha') { [[523,0],[659,.13],[784,.26],[1046,.42],[1318,.6]].forEach(([f,t]) => tone(f, t, .3, 'triangle', .13)); tone(262, .42, .5, 'square', .05); }
     if (type === 'burstopen') { tone(350, 0, .16, 'sawtooth', .11, 750); tone(950, .05, .1, 'sine', .07, 1600); }
     if (type === 'flee') { tone(600, 0, .2, 'sine', .08, 300); tone(300, .18, .3, 'sine', .08, 150); }
-    if (type === 'super') { tone(392, 0, .12, 'square', .1); tone(523, .1, .12, 'square', .1); tone(659, .2, .12, 'square', .1); tone(784, .3, .3, 'square', .12); }
     if (type === 'fanfare') { const m = [[523,0],[523,.14],[523,.28],[659,.42],[784,.62],[659,.82],[1046,.98]]; m.forEach(([f,t]) => { tone(f, t, .3, 'triangle', .12); tone(f/2, t, .3, 'square', .04); }); }
-}
-
-/* Simple looping chiptune battle music */
-let musicOn = true, musicTimer = null, musicStep = 0;
-const MELODY = [392, 494, 587, 494, 659, 587, 494, 392, 440, 523, 659, 523, 587, 523, 440, 370];
-const BASSLINE = [98, 82, 110, 73];
-function startMusic() {
-    stopMusic();
-    if (!musicOn || !audioCtx) return;
-    musicTimer = setInterval(() => {
-        const i = musicStep % 16;
-        tone(MELODY[i], 0, .13, 'square', .024);
-        if (i % 4 === 0) tone(BASSLINE[Math.floor(i / 4)], 0, .3, 'triangle', .05);
-        if (i % 2 === 1) tone(MELODY[i] * 2, 0, .06, 'triangle', .012);
-        musicStep++;
-    }, 165);
-}
-function stopMusic() { if (musicTimer) { clearInterval(musicTimer); musicTimer = null; } }
-function toggleMusic() {
-    musicOn = !musicOn;
-    document.getElementById('mute-btn').innerText = musicOn ? '🔊' : '🔇';
-    if (musicOn && gameState.mode !== 'idle') startMusic(); else stopMusic();
 }
 
 /* ================= PARTICLE FX ================= */
 const canvas = document.getElementById('fx-canvas'), ctx = canvas.getContext('2d');
 let particles = [], projectiles = [];
 function initCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-window.addEventListener('resize', initCanvas); initCanvas();
+function setAppH() { document.documentElement.style.setProperty('--app-h', window.innerHeight + 'px'); }
+function markLastPlayed() {
+    const last = localStorage.getItem('pmaths_diff');
+    document.querySelectorAll('.diff-row .diff-card').forEach((el, i) => el.classList.toggle('last', ['easy', 'medium', 'hard'][i] === last));
+}
+window.addEventListener('resize', () => { setAppH(); initCanvas(); sizeCatchScreen(); });
+window.addEventListener('orientationchange', () => setTimeout(() => { setAppH(); initCanvas(); sizeCatchScreen(); }, 150));
+setAppH(); initCanvas(); markLastPlayed(); refreshResumeBtn();
 function drawStar(c, x, y, r, rot) {
     c.beginPath();
     for (let i = 0; i < 10; i++) { const rad = i % 2 === 0 ? r : r * .45, a = rot + Math.PI * i / 5; c[i === 0 ? 'moveTo' : 'lineTo'](x + Math.cos(a) * rad, y + Math.sin(a) * rad); }
@@ -530,16 +596,29 @@ function damagePopup(el, txt, color) {
 function showToast(txt) { const t = document.getElementById('toast'); t.innerText = txt; t.classList.remove('show'); void t.offsetWidth; t.classList.add('show'); }
 
 /* ================= SUMS (never negative) ================= */
-function rollDamage() {
-    if (difficulty === 'easy') return (Math.floor(Math.random() * 5) + 5) * 10;
-    if (difficulty === 'medium') return Math.floor(Math.random() * 15) * 5 + 50;
+function rollDamage(targetHp) {
+    const a = consecRight >= 3 ? 1 : (consecWrong >= 2 ? -1 : 0); // quietly tune within the difficulty
+    if (difficulty === 'easy') {
+        if (a < 0) return (Math.floor(Math.random() * 3) + 5) * 10;         // gentler tens 50-70
+        if (a > 0) return (Math.floor(Math.random() * 9) + 10) * 5;         // fives 50-90
+        return (Math.floor(Math.random() * 5) + 5) * 10;                    // tens 50-90
+    }
+    if (difficulty === 'medium') {
+        if (a < 0) return (Math.floor(Math.random() * 5) + 5) * 10;         // back to tens
+        if (a > 0) return 50 + Math.floor(Math.random() * 70);              // any 50-119
+        return Math.floor(Math.random() * 15) * 5 + 50;                     // fives 50-120
+    }
+    if (a < 0) return (Math.floor(Math.random() * 8)) * 5 + 50;             // fives 50-85
+    if (a > 0 && typeof targetHp === 'number' && targetHp % 10 < 9) {       // favour sums that need borrowing
+        for (let t = 0; t < 25; t++) { const d = 50 + Math.floor(Math.random() * 40); if (d % 10 > targetHp % 10) return d; }
+    }
     return Math.floor(Math.random() * 40) + 50;
 }
 function pickTurnMoves(mon, maxDmg) {
     const picked = [...movesFor(mon)].sort(() => Math.random() - .5).slice(0, 2);
-    let d1 = rollDamage(), d2 = rollDamage(), guard = 0;
-    while (d1 === d2 && guard++ < 20) d2 = rollDamage();
-    return picked.map(([name, type], i) => ({ name, icon: T[type] || "⭐", dmg: Math.max(1, Math.min(i === 0 ? d1 : d2, maxDmg)) }));
+    let d1 = rollDamage(maxDmg), d2 = rollDamage(maxDmg), guard = 0;
+    while (d1 === d2 && guard++ < 20) d2 = rollDamage(maxDmg);
+    return picked.map(([name, type], i) => ({ name, type, dmg: Math.max(1, Math.min(i === 0 ? d1 : d2, maxDmg)) }));
 }
 function catchSum() {
     let a, b;
@@ -587,25 +666,58 @@ function startGame(lvl) {
     document.getElementById('overlay').style.display = 'none';
     document.getElementById('end-screen').style.display = 'none';
     document.getElementById('nudge-btn').style.display = 'none';
-    ['home-btn', 'mute-btn'].forEach(id => document.getElementById(id).style.display = 'flex');
+    document.getElementById('home-btn').style.display = 'flex';
+    document.getElementById('stats-btn').style.display = 'flex';
     document.getElementById('dex-btn').style.display = 'block';
     document.getElementById('arena').style.opacity = '1';
+    localStorage.setItem('pmaths_diff', lvl);
+    updateLevelChip(); document.getElementById('level-chip').style.display = 'block';
+    consecRight = 0; consecWrong = 0; retryDmgBase = null;
     pIdx = 0; oIdx = 0; caughtThisBattle = []; mistakesThisBattle = 0;
-    streak = 0; superReady = false; updateStreakUI();
     potionsUsed = { reg: false, sup: false, hyp: false };
     ['reg', 'sup', 'hyp'].forEach(k => document.getElementById('btn-' + k).classList.remove('used'));
     rollHeals(); pickTeams();
-    clearAns(); updateUI(); startMusic(); nextTurn();
+    clearAns(); updateUI(); nextTurn();
 }
 function rematch() { startGame(difficulty); }
+function saveBattle() {
+    if (!playerTeam[pIdx] || !oppTeam[oIdx]) return;
+    const slim = t => t.map(u => ({ id: u.id, shiny: !!u.shiny, hp: u.hp }));
+    localStorage.setItem('pmaths_save', JSON.stringify({ difficulty, pIdx, oIdx, pt: slim(playerTeam), ot: slim(oppTeam), potions: potionsUsed, caught: caughtThisBattle, mistakes: mistakesThisBattle }));
+}
+function refreshResumeBtn() { document.getElementById('resume-btn').style.display = localStorage.getItem('pmaths_save') ? 'block' : 'none'; }
+function resumeBattle() {
+    const s = JSON.parse(localStorage.getItem('pmaths_save') || 'null'); if (!s) return;
+    initAudio(); difficulty = s.difficulty;
+    localStorage.setItem('pmaths_diff', difficulty);
+    document.getElementById('timer-container').style.display = (difficulty === 'easy') ? 'none' : 'block';
+    document.getElementById('overlay').style.display = 'none';
+    document.getElementById('end-screen').style.display = 'none';
+    document.getElementById('nudge-btn').style.display = 'none';
+    ['home-btn', 'stats-btn'].forEach(id => document.getElementById(id).style.display = 'flex');
+    document.getElementById('dex-btn').style.display = 'block';
+    document.getElementById('arena').style.opacity = '1';
+    updateLevelChip(); document.getElementById('level-chip').style.display = 'block';
+    pIdx = s.pIdx; oIdx = s.oIdx;
+    caughtThisBattle = s.caught || []; mistakesThisBattle = s.mistakes || 0;
+    consecRight = 0; consecWrong = 0; retryDmgBase = null;
+    potionsUsed = s.potions || { reg: false, sup: false, hyp: false };
+    ['reg', 'sup', 'hyp'].forEach(k => document.getElementById('btn-' + k).classList.toggle('used', !!potionsUsed[k]));
+    const mk = u => { const r = roster.find(x => x.id === u.id); return { ...r, shiny: u.shiny, hp: u.hp, max: 200, img: u.shiny ? ARTS(u.id) : ART(u.id), introduced: true }; };
+    playerTeam = s.pt.map(mk); oppTeam = s.ot.map(mk);
+    rollHeals(); clearAns(); updateUI(); nextTurn();
+}
 function goHome() {
-    clearInterval(timerId); stopMusic(); if (synth) synth.cancel();
+    clearInterval(timerId); if (synth) synth.cancel();
     gameState.mode = 'idle';
     document.getElementById('end-screen').style.display = 'none';
     document.getElementById('catch-screen').classList.remove('open');
     document.getElementById('overlay').style.display = 'flex';
-    ['home-btn', 'mute-btn', 'dex-btn'].forEach(id => document.getElementById(id).style.display = 'none');
+    ['home-btn', 'dex-btn', 'stats-btn'].forEach(id => document.getElementById(id).style.display = 'none');
+    localStorage.removeItem('pmaths_save'); refreshResumeBtn();
     document.getElementById('arena').style.opacity = '0';
+    document.getElementById('level-chip').style.display = 'none';
+    markLastPlayed();
     document.getElementById('question').innerText = 'Ready?';
     ['sum-v1', 'sum-v2', 'sum-op'].forEach(id => document.getElementById(id).innerText = '');
     clearAns();
@@ -617,8 +729,8 @@ function updateUI() {
     document.getElementById('p-name').innerText = p.name;
     document.getElementById('o-name').innerText = (o.shiny ? '✨ ' : '') + o.name;
     const pi = document.getElementById('p-img'), oi = document.getElementById('o-img');
-    safeImg(pi, SPRITE_SM(p.id)); safeImg(oi, o.shiny ? SPRITE_SMS(o.id) : SPRITE_SM(o.id));
-    pi.src = p.img; oi.src = o.img; oi.style.opacity = '1';
+    loadImg(pi, p.img, SPRITE_SM(p.id)); loadImg(oi, o.img, o.shiny ? SPRITE_SMS(o.id) : SPRITE_SM(o.id));
+    oi.style.opacity = '1';
     applyCardTheme('p', p.type); applyCardTheme('o', o.type);
     [...document.getElementById('p-team').children].forEach((b, i) => b.className = i < pIdx ? 'ball-proper spent' : 'ball-proper');
     [...document.getElementById('o-team').children].forEach((b, i) => b.className = i < oIdx ? 'ball-proper spent' : 'ball-proper');
@@ -636,13 +748,7 @@ function refreshBars() {
     });
 }
 function renderMoves(side, moves) {
-    document.getElementById(`${side}-moves`).innerHTML = moves.map(m => `<div class="move-row"><span>${m.icon} ${m.name.toUpperCase()}</span><span class="move-dmg">${m.dmg}</span></div>`).join('');
-}
-function updateStreakUI() {
-    const pips = document.getElementById('streak-pips');
-    const n = Math.min(streak, 3);
-    pips.innerHTML = '★'.repeat(n).split('').map(() => `<span style="color:#f5b400">★</span>`).join('') + '<span style="opacity:.35">' + '★'.repeat(3 - n) + '</span>';
-    pips.classList.toggle('charged', superReady);
+    document.getElementById(`${side}-moves`).innerHTML = moves.map(m => `<div class="move-row"><span class="mv">${typeIcon(m.type)} ${m.name.toUpperCase()}</span><span class="move-dmg">${m.dmg}</span></div>`).join('');
 }
 
 function nextTurn() {
@@ -652,16 +758,20 @@ function nextTurn() {
     const om = pickTurnMoves(o, p.hp);
     p.moves2 = pm; o.moves2 = om;
     const m = pm[Math.floor(Math.random() * 2)];
-    let superThis = false;
-    if (superReady) { m.dmg = Math.min(m.dmg * 2, o.hp); superThis = true; }
-    gameState.currentMove = m; gameState.superThis = superThis; gameState.mode = 'atk'; gameState.answer = o.hp - m.dmg;
+    if (retryDmgBase !== null) { // second chance with similar (not identical) numbers
+        const delta = difficulty === 'easy' ? 10 : (difficulty === 'medium' ? 5 : 1 + Math.floor(Math.random() * 3));
+        let nd = retryDmgBase + (Math.random() < .5 ? -delta : delta);
+        if (nd < 10) nd = retryDmgBase + delta;
+        m.dmg = Math.max(1, Math.min(nd, o.hp));
+        retryDmgBase = null;
+    }
+    gameState.currentMove = m; gameState.mode = 'atk'; gameState.answer = o.hp - m.dmg;
     renderMoves('p', pm); renderMoves('o', om);
-    const prefix = superThis ? '⭐ SUPER EFFECTIVE! ' : '';
-    const qText = `${prefix}${p.name} uses ${m.icon} ${m.name}! How much HP does ${o.name} have left?`;
+    const qText = `${p.name} uses ${m.name}! How much HP does ${o.name} have left?`;
     document.getElementById('question').innerText = qText;
     document.getElementById('sum-v1').innerText = o.hp; document.getElementById('sum-v2').innerText = m.dmg; document.getElementById('sum-op').innerText = "−";
-    if (superThis) { playSfx('super'); showToast('⭐ SUPER EFFECTIVE! ⭐'); }
-    speak(`${superThis ? 'Super effective!' : ''} ${p.name} uses ${m.name}! How much HP does ${o.name} have left?`);
+    speak(qText);
+    saveBattle();
     startTimer();
 }
 
@@ -675,6 +785,7 @@ function useHeal(potionName) {
     document.getElementById('btn-' + key).classList.add('used');
     gameState.mode = 'heal';
     const amt = curHeals[key];
+    clearAns();
     gameState.rawHealingResult = p.hp + amt;
     gameState.answer = Math.min(p.max, p.hp + amt);
     const qText = `Using the ${potionName}, how much HP does ${p.name} have now?`;
@@ -683,8 +794,13 @@ function useHeal(potionName) {
     speak(qText); startTimer();
 }
 
-function press(n) { playSfx('press'); const d = document.getElementById('answer-text'); if (d.innerText.length < 4) d.innerText += n; }
-function clearAns() { document.getElementById('answer-text').innerText = ""; }
+function updateAnswerMirror() {
+    const txt = document.getElementById('answer-text').innerText;
+    document.getElementById('sum-ans').innerText = txt;
+    if (gameState.mode === 'catch') document.getElementById('catch-sum').innerText = `${gameState.catchA} + ${gameState.catchB} = ${txt || '?'}`;
+}
+function press(n) { playSfx('press'); const d = document.getElementById('answer-text'); if (d.innerText.length < 4) d.innerText += n; updateAnswerMirror(); }
+function clearAns() { document.getElementById('answer-text').innerText = ""; updateAnswerMirror(); }
 function readAns() { return parseInt(document.getElementById('answer-text').innerText); }
 
 function submit() {
@@ -696,25 +812,22 @@ function submit() {
     const pCard = document.getElementById('p-card'), oCard = document.getElementById('o-card');
     const pTheme = typeThemes[p.type] || typeThemes.normal, oTheme = typeThemes[o.type] || typeThemes.normal;
 
-    if (gameState.mode === 'catch') { resolveCatch(val === gameState.answer, gameState.answer); return; }
+    if (gameState.mode === 'catch') { const ok = val === gameState.answer; recordAnswer(ok); resolveCatch(ok, gameState.answer); return; }
 
     const isCorrect = (gameState.mode === 'atk') ? (val === gameState.answer) : (val === gameState.answer || val === gameState.rawHealingResult);
+    recordAnswer(isCorrect);
+    if (!isCorrect && gameState.mode === 'atk' && gameState.currentMove) retryDmgBase = gameState.currentMove.dmg;
 
     if (isCorrect) {
         playSfx('chime');
-        streak++;
-        if (streak >= 3 && !superReady && gameState.mode === 'atk' && !gameState.superThis) { superReady = true; showToast('⭐ SUPER CHARGE READY! ⭐'); playSfx('super'); }
-        updateStreakUI();
         if (gameState.mode === 'atk') {
             const dmg = gameState.currentMove.dmg;
-            const wasSuper = gameState.superThis;
             gameState.currentMove = null;
-            if (wasSuper) { superReady = false; streak = 0; updateStreakUI(); }
             pCard.classList.add('lunge-right');
             fireProjectile(pCard, oCard, pTheme.c1, () => {
                 triggerImpact(); playSfx('impact');
-                const c = centerOf(oCard); burst(c.x, c.y, [pTheme.c1, '#fff', '#ffe97a'], wasSuper ? 30 : 16, wasSuper ? 8 : 6);
-                damagePopup(oCard, `-${dmg}`, wasSuper ? '#ffd700' : '#ff5252');
+                const c = centerOf(oCard); burst(c.x, c.y, [pTheme.c1, '#fff', '#ffe97a']);
+                damagePopup(oCard, `-${dmg}`, '#ff5252');
                 o.hp = Math.max(0, o.hp - dmg);
                 oCard.classList.add('damage-shake'); pCard.classList.remove('lunge-right');
                 refreshBars();
@@ -729,8 +842,6 @@ function submit() {
     } else {
         playSfx('wrong');
         mistakesThisBattle++;
-        streak = 0; if (gameState.superThis) { superReady = false; gameState.superThis = false; }
-        updateStreakUI();
         const ans = gameState.answer;
         document.getElementById('question').innerText = `Not quite — the answer was ${ans}!`;
         speak(`Not quite! The answer was ${ans}.`);
@@ -781,18 +892,24 @@ function handleKO(side) {
     }, 850);
 }
 
+function sizeCatchScreen() {
+    const scr = document.getElementById('catch-screen');
+    const top = document.getElementById('controls-area').getBoundingClientRect().top;
+    scr.style.bottom = Math.max(0, window.innerHeight - top) + 'px';
+}
 function startCatch(target) {
     gameState.mode = 'catch'; gameState.catchTarget = target;
-    stopMusic(); // hush the music for the big moment
+    gameState.dailyBonus = localStorage.getItem('pmaths_daily') !== todayStr();
     const scr = document.getElementById('catch-screen');
+    sizeCatchScreen();
     const img = document.getElementById('catch-img');
-    safeImg(img, target.shiny ? SPRITE_SMS(target.id) : SPRITE_SM(target.id));
-    img.src = target.img; img.style.opacity = '1'; img.classList.remove('escape');
+    loadImg(img, target.img, target.shiny ? SPRITE_SMS(target.id) : SPRITE_SM(target.id));
+    img.style.opacity = '1'; img.classList.remove('escape');
     document.getElementById('catch-title').innerText = `${target.shiny ? '✨ SHINY ' : ''}${target.name} is weak! Solve the sum to catch it!`;
-    const s = catchSum(); gameState.answer = s.ans;
+    const s = catchSum(); gameState.answer = s.ans; gameState.catchA = s.a; gameState.catchB = s.b;
     document.getElementById('catch-sum').innerText = `${s.a} + ${s.b} = ?`;
     document.getElementById('catch-result').className = ''; document.getElementById('catch-result').innerText = '';
-    document.getElementById('catch-sub').innerText = '';
+    document.getElementById('catch-sub').innerText = gameState.dailyBonus ? '✨ DAILY BONUS: guaranteed catch! ✨' : '';
     document.getElementById('catch-timerbar').style.display = difficulty === 'easy' ? 'none' : 'block';
     scr.classList.add('open');
     clearAns();
@@ -804,6 +921,9 @@ function startCatch(target) {
 function resolveCatch(success, correctAns) {
     const wasWrong = !success;
     if (wasWrong) mistakesThisBattle++;
+    const bonusUsed = gameState.dailyBonus === true;
+    if (bonusUsed) { localStorage.setItem('pmaths_daily', todayStr()); gameState.dailyBonus = false; }
+    if (bonusUsed && !success) success = true; // the daily bonus rescues a miss
     gameState.mode = 'idle';
     const img = document.getElementById('catch-img'), ball = document.getElementById('catch-ball');
     const c = centerOf(img);
@@ -819,6 +939,7 @@ function resolveCatch(success, correctAns) {
             const target = gameState.catchTarget;
             const result = document.getElementById('catch-result'), sub = document.getElementById('catch-sub');
             if (success) {
+                if (wasWrong) sub.innerText = `The answer was ${correctAns} — the Daily Bonus saved you!`;
                 playSfx('lock');
                 setTimeout(() => {
                     playSfx('gotcha');
@@ -832,9 +953,12 @@ function resolveCatch(success, correctAns) {
                     localStorage.setItem('pmaths_dex_v1', JSON.stringify(dex));
                     localStorage.setItem('pmaths_shiny_v1', JSON.stringify(shinyDex));
                     caughtThisBattle.push(target.id);
+                    stats.ccs++; stats.cbs = Math.max(stats.cbs, stats.ccs); localStorage.setItem('pmaths_stats', JSON.stringify(stats));
+                    checkMilestone();
                     setTimeout(() => endCatch(ball), 2100);
                 }, 350);
             } else {
+                stats.ccs = 0; localStorage.setItem('pmaths_stats', JSON.stringify(stats));
                 playSfx('burstopen');
                 triggerImpact();
                 ball.style.display = 'none';
@@ -858,11 +982,26 @@ function wobbleSequence(ball, times, done) {
         setTimeout(wob, 780);
     })();
 }
+let pendingMilestone = null;
+function checkMilestone() {
+    const done = JSON.parse(localStorage.getItem('pmaths_miles')) || [];
+    for (const m of [25, 50, 100, 150]) {
+        if (dex.length >= m && !done.includes(m)) { done.push(m); localStorage.setItem('pmaths_miles', JSON.stringify(done)); pendingMilestone = m; break; }
+    }
+}
 function endCatch(ball) {
     ball.style.display = 'none'; ball.style.transition = 'none'; ball.classList.remove('wob');
     document.getElementById('catch-screen').classList.remove('open');
     document.getElementById('catch-img').classList.remove('escape');
-    startMusic();
+    if (pendingMilestone) {
+        const m = pendingMilestone; pendingMilestone = null;
+        setTimeout(() => {
+            playSfx('fanfare');
+            for (let i = 0; i < 6; i++) setTimeout(() => burst(Math.random() * canvas.width, Math.random() * canvas.height * .5, ['#ffd700', '#fff', `hsl(${Math.random()*360},100%,65%)`], 20, 7), i * 250);
+            showToast(`🏅 ${m} POKÉMON CAUGHT! 🏅`);
+            speak(m === 150 ? 'Incredible! You caught all one hundred and fifty pokemon! You are a true Pokemon Master!' : `Amazing! ${m} pokemon caught!`);
+        }, 600);
+    }
     proceedAfterOppKO();
 }
 function proceedAfterOppKO() {
@@ -874,7 +1013,8 @@ function proceedAfterOppKO() {
 
 /* ================= END / TIMER ================= */
 function showFinal(win) {
-    clearInterval(timerId); stopMusic();
+    clearInterval(timerId);
+    localStorage.removeItem('pmaths_save');
     gameState.mode = 'idle';
     document.getElementById('end-screen').style.display = 'flex';
     document.getElementById('end-title').innerText = win ? "CHAMPION!" : "SO CLOSE!";
@@ -886,10 +1026,11 @@ function showFinal(win) {
     caughtThisBattle.forEach(id => {
         const img = document.createElement('img');
         const isShiny = shinyDex.includes(id);
-        safeImg(img, isShiny ? ARTS(id) : ART(id)); img.src = isShiny ? SPRITE_SMS(id) : SPRITE_SM(id);
+        loadImg(img, isShiny ? SPRITE_SMS(id) : SPRITE_SM(id), isShiny ? ARTS(id) : ART(id));
         parade.appendChild(img);
     });
     const nudge = document.getElementById('nudge-btn');
+    if (win && mistakesThisBattle === 0) { stats.pb++; localStorage.setItem('pmaths_stats', JSON.stringify(stats)); }
     if (win && mistakesThisBattle === 0 && difficulty !== 'hard') {
         const next = difficulty === 'easy' ? 'medium' : 'hard';
         nudge.innerText = `PERFECT! TRY ${next.toUpperCase()}!`;
@@ -897,6 +1038,8 @@ function showFinal(win) {
         nudge.style.display = 'block';
     } else nudge.style.display = 'none';
     if (win) {
+        wins++; localStorage.setItem('pmaths_wins', String(wins)); updateLevelChip();
+        document.getElementById('end-msg').innerText += ` ⭐ Trainer Level ${wins + 1}!`;
         playSfx('fanfare');
         speak(mistakesThisBattle === 0 ? "Perfect battle! Champion!" : (nCaught ? `Champion! And you caught ${nCaught} new pokemon!` : "Champion! Amazing work!"));
         for (let i = 0; i < 10; i++) setTimeout(() => burst(Math.random() * canvas.width, Math.random() * canvas.height * .5, [`hsl(${Math.random()*360},100%,65%)`, '#fff'], 20, 7), i * 300);
@@ -923,21 +1066,54 @@ function startTimer() {
 function openDex() {
     const list = document.getElementById('pokedex-list');
     let htmlStr = '', count = 0;
+    const seen = JSON.parse(localStorage.getItem('pmaths_dex_seen')) || [];
     roster.forEach(r => {
         const found = dex.includes(r.id); if (found) count++;
         const isShiny = shinyDex.includes(r.id);
-        htmlStr += `<div class="dex-entry ${found ? '' : 'locked'} ${isShiny ? 'shiny' : ''}"><img loading="lazy" decoding="async" alt="${r.name}"><span class="dex-name">${found ? (isShiny ? '✨' : '') + r.name : '???'}</span></div>`;
+        const fresh = found && !seen.includes(r.id);
+        htmlStr += `<div class="dex-entry ${found ? '' : 'locked'} ${isShiny ? 'shiny' : ''} ${fresh ? 'fresh' : ''}"><img loading="lazy" decoding="async" alt="${r.name}"><span class="dex-name">${found ? (isShiny ? '✨' : '') + r.name : '???'}</span></div>`;
     });
     list.innerHTML = htmlStr;
     list.querySelectorAll('img').forEach((img, i) => {
         const r = roster[i], isShiny = shinyDex.includes(r.id);
-        safeImg(img, isShiny ? ARTS(r.id) : ART(r.id));
-        img.src = isShiny ? SPRITE_SMS(r.id) : SPRITE_SM(r.id);
+        loadImg(img, isShiny ? SPRITE_SMS(r.id) : SPRITE_SM(r.id), isShiny ? ARTS(r.id) : ART(r.id));
     });
+    list.querySelectorAll('.dex-entry').forEach((el, i) => { el.onclick = () => dexEntryTap(roster[i]); });
     document.getElementById('dex-title').innerText = `CAUGHT: ${count}/150${shinyDex.length ? ' ✨' + shinyDex.length : ''}`;
     document.getElementById('pokedex-view').style.display = 'flex';
 }
-function closeDex() { document.getElementById('pokedex-view').style.display = 'none'; }
+function closeDex() {
+    document.getElementById('pokedex-view').style.display = 'none';
+    localStorage.setItem('pmaths_dex_seen', JSON.stringify(dex)); // fresh-catch sparkles shown once
+}
+function dexEntryTap(r) {
+    if (!dex.includes(r.id)) { showToast('Not caught yet!'); return; }
+    const isShiny = shinyDex.includes(r.id);
+    const th = typeThemes[r.type] || typeThemes.normal;
+    loadImg(document.getElementById('detail-img'), isShiny ? ARTS(r.id) : ART(r.id), isShiny ? SPRITE_SMS(r.id) : SPRITE_SM(r.id));
+    document.getElementById('detail-name').innerText = r.name;
+    const t = document.getElementById('detail-type');
+    t.innerText = r.type.toUpperCase(); t.style.background = th.c2;
+    document.querySelector('.detail-card').style.borderColor = isShiny ? '#ffd700' : th.c2;
+    document.getElementById('detail-flair').innerText = isShiny ? '✨ Shiny caught! ✨' : '';
+    document.getElementById('detail-modal').style.display = 'flex';
+}
+function closeDetail() { document.getElementById('detail-modal').style.display = 'none'; }
+function openStats() {
+    if (stats.wk !== weekKey()) { stats.wk = weekKey(); stats.wa = 0; stats.wc = 0; }
+    const acc = stats.a ? Math.round(stats.c / stats.a * 100) : 0;
+    const cards = [
+        ['🏆', wins + 1, 'Trainer Level'], ['⚔️', wins, 'Battles Won'],
+        ['🔥', stats.bs, 'Best Answer Streak'], ['🎯', stats.cbs, 'Best Catch Streak'],
+        ['💯', stats.pb, 'Perfect Battles'], ['📗', dex.length + '/150', 'Pokémon Caught'],
+        ['✨', shinyDex.length, 'Shiny Pokémon'], ['🧮', stats.c, 'Sums Solved'],
+        ['📈', acc + '%', 'Accuracy'], ['📅', stats.wc + '/' + stats.wa, 'Correct This Week']
+    ];
+    document.getElementById('stats-grid').innerHTML = cards.map(([e, n, l]) =>
+        `<div class="stat-card"><div class="stat-emoji">${e}</div><div class="stat-num">${n}</div><div class="stat-label">${l}</div></div>`).join('');
+    document.getElementById('stats-view').style.display = 'flex';
+}
+function closeStats() { document.getElementById('stats-view').style.display = 'none'; }
 function askReset() {
     document.getElementById('confirm-msg').innerText = `All ${dex.length} of your caught Pokémon will be released back into the wild!`;
     document.getElementById('confirm-modal').style.display = 'flex';
