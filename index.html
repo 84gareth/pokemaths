@@ -40,23 +40,26 @@
         #end-parade { position: relative; z-index: 5; display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; justify-content: center; }
         #end-parade img { width: 52px; height: 52px; image-rendering: pixelated; filter: drop-shadow(0 3px 3px rgba(0,0,0,.35)); }
 
-        .corner-btn { position: fixed; top: calc(env(safe-area-inset-top, 8px) + 6px); z-index: 1650; width: 46px; height: 46px; border-radius: 50%; border: 4px solid #333; cursor: pointer; transition: transform .12s; }
-        .corner-btn:active { transform: scale(.88); }
-        #home-btn { left: 12px; background: linear-gradient(#fff, #dfe6ee); display: flex; align-items: center; justify-content: center; }
-        #home-btn svg { width: 24px; height: 24px; fill: #333; }
-        #stats-btn { right: 66px; background: linear-gradient(#fff, #dfe6ee); display: flex; align-items: center; justify-content: center; }
-        #dex-btn { right: 12px; background: white; overflow: hidden; }
+        #top-bar { flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: calc(env(safe-area-inset-top, 8px) + 6px) 12px 4px; min-height: 44px; }
+        .bar-group { display: flex; gap: 8px; align-items: center; width: 96px; }
+        .bar-group.right { justify-content: flex-end; }
+        .bar-btn { position: relative; width: 44px; height: 44px; border-radius: 50%; border: 4px solid #333; cursor: pointer; transition: transform .12s; flex-shrink: 0; }
+        .bar-btn:active { transform: scale(.88); }
+        #home-btn { background: linear-gradient(#fff, #dfe6ee); display: flex; align-items: center; justify-content: center; }
+        #home-btn svg { width: 23px; height: 23px; fill: #333; }
+        #stats-btn { background: linear-gradient(#fff, #dfe6ee); display: flex; align-items: center; justify-content: center; }
+        #dex-btn { background: white; overflow: hidden; }
         #dex-btn::before { content: ''; width: 100%; height: 5px; background: #333; position: absolute; top: 50%; left: 0; transform: translateY(-50%); z-index: 1; }
         #dex-btn::after { content: ''; width: 100%; height: 50%; background: #ff0000; position: absolute; top: 0; border-bottom: 3px solid #333; }
         #dex-btn div { width: 12px; height: 12px; background: white; border: 3px solid #333; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 5; }
-        #level-chip { position: fixed; top: calc(env(safe-area-inset-top, 8px) + 14px); left: 50%; transform: translateX(-50%); z-index: 1500; background: linear-gradient(#333, #111); border: 2.5px solid var(--poke-yellow); color: var(--poke-yellow); font-family: var(--font-title); font-size: 13px; padding: 7px 14px 3px; border-radius: 14px; display: none; white-space: nowrap; }
+        #level-chip { background: linear-gradient(#333, #111); border: 2.5px solid var(--poke-yellow); color: var(--poke-yellow); font-family: var(--font-title); font-size: 13px; padding: 6px 13px 2px; border-radius: 14px; display: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .diff-card { position: relative; }
         .diff-card.last::after { content: 'LAST PLAYED'; position: absolute; top: -11px; left: 50%; transform: translateX(-50%); background: var(--poke-yellow); color: #333; font-family: var(--font-main); font-weight: 800; font-size: 9px; padding: 2px 8px; border-radius: 8px; border: 2px solid #d4a017; white-space: nowrap; }
 
-        #arena { height: 33vh; display: flex; justify-content: center; align-items: stretch; gap: 8px; padding: 6px 6px 2px; opacity: 0; transition: opacity 0.5s; }
+        #arena { height: 29vh; display: flex; justify-content: center; align-items: stretch; gap: 8px; padding: 2px 6px; opacity: 0; transition: opacity 0.5s; }
         .card-slot { flex: 1; max-width: 280px; display: flex; flex-direction: column; }
-        .team-tracker { display: flex; justify-content: center; gap: 6px; margin-bottom: 4px; height: 22px; flex-shrink: 0; }
-        .ball-proper { width: 20px; height: 20px; background: white; border-radius: 50%; border: 2px solid #333; position: relative; overflow: hidden; }
+        .team-tracker { display: flex; justify-content: center; gap: 6px; margin-bottom: 3px; height: 19px; flex-shrink: 0; }
+        .ball-proper { width: 18px; height: 18px; background: white; border-radius: 50%; border: 2px solid #333; position: relative; overflow: hidden; }
         .ball-proper::before { content: ""; position: absolute; top: 0; width: 100%; height: 50%; background: #eb4d4b; border-bottom: 2px solid #333; }
         .ball-proper.spent { filter: grayscale(1) brightness(0.25); opacity: 0.5; }
 
@@ -86,40 +89,64 @@
         .move-row .mv svg { flex-shrink: 0; }
         .move-dmg { font-family: var(--font-title); color: var(--poke-yellow); font-size: 0.68rem; }
 
-        #timer-container { width: 94%; height: 12px; background: #222; margin: 4px auto; border-radius: 10px; border: 2px solid #fff; overflow: hidden; flex-shrink: 0; }
+        #timer-container { width: 94%; height: 10px; background: #222; margin: 3px auto; border-radius: 10px; border: 2px solid #fff; overflow: hidden; flex-shrink: 0; }
         .timer-fill { height: 100%; width: 100%; background: linear-gradient(90deg, #00e5ff, #00ffcc); }
-        #question-area { height: 15vh; display: flex; align-items: stretch; justify-content: center; padding: 4px 8px; gap: 8px; }
-        #question { flex: 2; background: linear-gradient(#ffffff, #f2ecdc); border: 4px solid #d4a017; border-radius: 16px; display: flex; align-items: center; justify-content: center; padding: 6px 10px; color: #333; font-size: 0.92rem; text-align: center; font-weight: 800; line-height: 1.25; }
-        #sum-box { flex: 0 0 128px; background: linear-gradient(#333, #111); border: 3px solid #fff; border-radius: 14px; display: flex; flex-direction: column; align-items: stretch; justify-content: center; color: var(--poke-yellow); font-family: var(--font-main); font-weight: 800; box-shadow: 0 3px 8px rgba(0,0,0,.35); padding: 4px 0; }
-        #sum-box .sum-line { display: flex; align-items: baseline; justify-content: flex-end; padding: 0 14px; font-size: 1.4rem; line-height: 1.18; font-variant-numeric: tabular-nums; }
-        #sum-box .sum-line .op { margin-right: auto; color: #ff7043; font-family: var(--font-title); font-size: 1.45rem; }
+        #question-area { height: 13vh; display: flex; align-items: stretch; justify-content: center; padding: 3px 8px; gap: 8px; }
+        #question { flex: 2; background: linear-gradient(#ffffff, #f2ecdc); border: 4px solid #d4a017; border-radius: 16px; display: flex; align-items: center; justify-content: center; padding: 5px 9px; color: #333; font-size: 0.82rem; text-align: center; font-weight: 800; line-height: 1.25; }
+        #sum-box { flex: 0 0 118px; background: linear-gradient(#333, #111); border: 3px solid #fff; border-radius: 14px; display: flex; flex-direction: column; align-items: stretch; justify-content: center; color: var(--poke-yellow); font-family: var(--font-main); font-weight: 800; box-shadow: 0 3px 8px rgba(0,0,0,.35); padding: 4px 0; }
+        #sum-box .sum-line { display: flex; align-items: baseline; justify-content: flex-end; padding: 0 12px; font-size: 1.28rem; line-height: 1.15; font-variant-numeric: tabular-nums; }
+        #sum-box .sum-line .op { margin-right: auto; color: #ff7043; font-family: var(--font-title); font-size: 1.32rem; }
         #sum-box .sum-line.rule { border-bottom: 3px solid var(--poke-yellow); padding-bottom: 2px; margin-bottom: 2px; }
-        #sum-box .sum-line.ans { color: #7dff9b; min-height: 1.45rem; }
+        #sum-box .sum-line.ans { color: #7dff9b; min-height: 1.32rem; }
 
-        #controls-area { flex: 1; background: linear-gradient(180deg, #0984e3 0%, #2367a3 100%); border-top: 5px solid var(--poke-yellow); display: flex; flex-direction: row; align-items: stretch; justify-content: center; padding: 10px 10px calc(env(safe-area-inset-bottom, 8px) + 8px); border-radius: 25px 25px 0 0; gap: 10px; min-height: 0; position: relative; z-index: 1600; }
-        #potion-belt { display: flex; flex-direction: column; gap: 8px; width: 100px; flex-shrink: 0; }
+        #controls-area { flex: 1; background: linear-gradient(180deg, #0984e3 0%, #2367a3 100%); border-top: 5px solid var(--poke-yellow); display: flex; flex-direction: row; align-items: stretch; justify-content: center; padding: 8px 8px calc(env(safe-area-inset-bottom, 8px) + 6px); border-radius: 22px 22px 0 0; gap: 8px; min-height: 0; position: relative; z-index: 1600; }
+        #potion-belt { display: flex; flex-direction: column; gap: 6px; width: 90px; flex-shrink: 0; }
         .potion-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; border-radius: 16px; border: 3px solid #fff; color: white; text-align: center; box-shadow: 0 4px 0 rgba(0,0,0,0.35); cursor: pointer; transition: transform .1s, filter .3s, opacity .3s; padding: 3px 0; }
         .potion-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,.35); }
         .potion-btn.used { filter: grayscale(1); opacity: .45; pointer-events: none; }
         .p-reg { background: linear-gradient(#b06ad0, #8e44ad); } .p-super { background: linear-gradient(#ffd54f, #eba800); } .p-hyper { background: linear-gradient(#f75d90, #d81b60); }
-        .potion-btn img { width: 42px; height: 42px; image-rendering: pixelated; filter: drop-shadow(0 2px 2px rgba(0,0,0,.4)); pointer-events: none; }
-        .potion-text { font-size: 0.55rem; font-weight: 800; letter-spacing: .3px; text-shadow: 0 1px 2px rgba(0,0,0,.4); }
+        .potion-btn img { width: 34px; height: 34px; image-rendering: pixelated; filter: drop-shadow(0 2px 2px rgba(0,0,0,.4)); pointer-events: none; }
+        .potion-text { font-size: 0.5rem; font-weight: 800; letter-spacing: .3px; text-shadow: 0 1px 2px rgba(0,0,0,.4); }
         .p-super .potion-text { color: #5d4300; text-shadow: none; }
-        .potion-val { font-family: var(--font-title); font-size: 0.8rem; color: #fff; text-shadow: 1px 1px #000; }
+        .potion-val { font-family: var(--font-title); font-size: 0.72rem; color: #fff; text-shadow: 1px 1px #000; }
         .p-super .potion-val { color: #5d4300; text-shadow: none; }
 
         #numpad-wrapper { flex: 1; display: flex; flex-direction: column; max-width: 450px; min-height: 0; }
-        #display-answer { background: #fff; font-size: 1.8rem; width: 100%; border-radius: 12px; height: 44px; color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; border: 3px solid #d4a017; margin-bottom: 7px; flex-shrink: 0; position: relative; }
+        #display-answer { background: #fff; font-size: 1.55rem; width: 100%; border-radius: 12px; height: 38px; color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; border: 3px solid #d4a017; margin-bottom: 6px; flex-shrink: 0; position: relative; }
         .pad-and-submit { display: flex; flex-direction: row; flex: 1; gap: 10px; min-height: 0; }
-        .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; flex: 3; }
-        .num-btn { background: linear-gradient(#ffffff, #e8ecf2); border: none; border-radius: 14px; font-size: 1.55rem; font-weight: 800; font-family: var(--font-main); color: #2f3640; cursor: pointer; box-shadow: 0 4px 0 #a9b4c0; transition: transform .06s; }
+        .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; flex: 3; }
+        .num-btn { background: linear-gradient(#ffffff, #e8ecf2); border: none; border-radius: 12px; font-size: 1.3rem; font-weight: 800; font-family: var(--font-main); color: #2f3640; cursor: pointer; box-shadow: 0 4px 0 #a9b4c0; transition: transform .06s; }
         .num-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #a9b4c0; }
         .btn-submit { flex: 1.2; background: linear-gradient(#f2655f, #d63a30); border-radius: 20px; border: 5px solid white; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 6px 0 #a02015; transition: transform .08s; }
         .btn-submit:active { transform: translateY(4px); box-shadow: 0 2px 0 #a02015; }
-        .pokeball-icon { width: 52px; height: 52px; background: white; border-radius: 50%; border: 3.5px solid #333; position: relative; overflow: hidden; animation: pulsePoke 2s infinite; }
-        .pokeball-icon::before { content: ""; position: absolute; top: 0; width: 100%; height: 50%; background: #eb4d4b; border-bottom: 3.5px solid #333; }
+        .pokeball-icon { width: 44px; height: 44px; background: white; border-radius: 50%; border: 3.5px solid #333; position: relative; overflow: hidden; animation: pulsePoke 2s infinite; }
+        .pokeball-icon::before { content: ""; position: absolute; top: 0; width: 100%; height: 50%; background: #eb4d4b; border-bottom: 3px solid #333; }
         .pokeball-icon::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 16px; height: 14px; background: white; border: 3.5px solid #333; border-radius: 50%; z-index: 2; }
 
+        #review-overlay { position: fixed; inset: 0; z-index: 1700; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 14px; background: rgba(8, 15, 38, .88); padding: 20px; }
+        #review-overlay.open { display: flex; }
+        #review-sum { font-family: var(--font-title); font-size: clamp(24px, 8vw, 34px); color: #fff; background: linear-gradient(#333, #111); border: 3px solid #fff; border-radius: 16px; padding: 10px 24px 6px; box-shadow: 0 4px 12px rgba(0,0,0,.45); }
+        .rev-card { display: flex; align-items: center; gap: 14px; width: 88%; max-width: 340px; background: #fff; border-radius: 18px; padding: 12px 18px; box-shadow: 0 8px 20px rgba(0,0,0,.35); }
+        .rev-card.bad { border: 4px solid #e53935; }
+        .rev-card.good { border: 4px solid #43a047; }
+        .rev-mark { font-size: 40px; font-weight: 900; line-height: 1; flex-shrink: 0; font-family: var(--font-main); }
+        .rev-card.bad .rev-mark { color: #e53935; }
+        .rev-card.good .rev-mark { color: #43a047; }
+        .rev-text { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
+        .rev-label { font-size: 11px; font-weight: 800; letter-spacing: 1px; color: #888; }
+        .rev-card.bad .rev-label { color: #c62828; }
+        .rev-card.good .rev-label { color: #2e7d32; }
+        .rev-val { font-family: var(--font-title); font-size: 34px; color: #333; line-height: 1.1; }
+        .rev-val.noans { font-size: 20px; color: #999; padding-top: 6px; }
+        #review-tap { font-weight: 800; font-size: 15px; color: #cfe0ff; animation: tapPulse 1.4s ease-in-out infinite; margin-top: 4px; }
+        @keyframes tapPulse { 0%, 100% { opacity: .55; transform: scale(1); } 50% { opacity: 1; transform: scale(1.06); } }
+        .digit-slot { display: inline-flex; width: 25px; height: 31px; margin: 0 3px; border: 2.5px dashed #b9c2cc; border-radius: 8px; align-items: center; justify-content: center; font-size: 1.35rem; font-weight: 800; color: #2f3640; }
+        .digit-slot.filled { border-style: solid; border-color: #3d7dca; background: #eaf3ff; }
+        @keyframes okFlash { 0% { background: #7dff9b; box-shadow: 0 0 16px #4caf50; } 100% { background: #fff; } }
+        #display-answer.ok-anim { animation: okFlash .4s ease; }
+        #recap-panel { position: relative; z-index: 5; display: none; background: rgba(0,0,0,.45); border: 2px solid rgba(255,255,255,.5); border-radius: 16px; padding: 10px 18px; margin-top: 12px; max-width: 320px; text-align: left; }
+        #recap-panel h4 { font-family: var(--font-title); font-size: 15px; color: var(--poke-yellow); margin: 0 0 6px; }
+        #recap-panel div { font-weight: 800; font-size: 14px; font-variant-numeric: tabular-nums; padding: 1px 0; }
         #fx-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 1800; }
         #hit-flash { position: fixed; inset: 0; background: white; opacity: 0; pointer-events: none; z-index: 1900; }
         .active-flash { animation: flashEffect 0.3s ease-out forwards; }
@@ -132,7 +159,7 @@
         #toast.show { animation: toastPop 1.6s ease forwards; }
 
         /* ---------- CATCH SCREEN ---------- */
-        #catch-screen { position: fixed; left: 0; right: 0; top: 0; bottom: 0; z-index: 1550; display: none; flex-direction: column; align-items: center; justify-content: space-evenly; padding: calc(env(safe-area-inset-top, 10px) + 56px) 10px 4px; background: radial-gradient(circle at 50% 30%, rgba(61,125,202,.94), rgba(8,15,38,.97) 72%); }
+        #catch-screen { position: fixed; left: 0; right: 0; top: 0; bottom: 0; z-index: 1550; display: none; flex-direction: column; align-items: center; justify-content: space-evenly; padding: calc(env(safe-area-inset-top, 10px) + 62px) 10px 4px; background: radial-gradient(circle at 50% 30%, rgba(61,125,202,.94), rgba(8,15,38,.97) 72%); }
         #catch-screen.open { display: flex; }
         #catch-title { font-family: var(--font-title); font-size: clamp(15px, 4.6vw, 21px); color: var(--poke-yellow); text-shadow: 2px 2px 0 rgba(0,0,0,.5); text-align: center; padding: 0 12px; flex-shrink: 0; }
         #catch-img { max-height: 32%; min-height: 60px; flex-shrink: 1; object-fit: contain; filter: grayscale(.5) brightness(.95) drop-shadow(0 0 24px rgba(255,255,255,.5)); transition: opacity .25s; }
@@ -201,6 +228,12 @@
     <canvas id="fx-canvas"></canvas>
     <div id="toast"></div>
 
+    <div id="review-overlay" onclick="reviewTap()">
+        <div id="review-sum"></div>
+        <div class="rev-card bad"><div class="rev-mark">✗</div><div class="rev-text"><div class="rev-label">YOUR ANSWER</div><div class="rev-val" id="rev-yours"></div></div></div>
+        <div class="rev-card good"><div class="rev-mark">✓</div><div class="rev-text"><div class="rev-label">CORRECT ANSWER</div><div class="rev-val" id="rev-correct"></div></div></div>
+        <div id="review-tap">Tap anywhere to continue</div>
+    </div>
     <div id="catch-screen">
         <div id="catch-title">A wild POKEMON is weak!</div>
         <img id="catch-img" alt="">
@@ -231,15 +264,13 @@
         <h1 id="end-title"></h1>
         <p id="end-msg"></p>
         <div id="end-parade"></div>
+        <div id="recap-panel"><h4>Tricky sums to practise:</h4><div id="recap-list"></div></div>
         <button class="end-btn btn-gold" id="nudge-btn" style="display:none;"></button>
         <button class="end-btn btn-green" onclick="rematch()">BATTLE AGAIN!</button>
         <button class="end-btn btn-blue" onclick="goHome()">CHANGE DIFFICULTY</button>
     </div>
 
-    <div id="home-btn" class="corner-btn" onclick="goHome()" style="display:none;"><svg viewBox="0 0 24 24"><path d="M10 19l-7-7 7-7v4h8a3 3 0 0 1 3 3v5h-3v-4a1 1 0 0 0-1-1h-7v7z"/></svg></div>
-    <div id="stats-btn" class="corner-btn" onclick="openStats()" style="display:none;"><svg width="22" height="22" viewBox="0 0 24 24"><rect x="3" y="12" width="5" height="9" rx="1.5" fill="#3d7dca"/><rect x="9.5" y="6" width="5" height="15" rx="1.5" fill="#ffcb05" stroke="#b8860b" stroke-width="1"/><rect x="16" y="9" width="5" height="12" rx="1.5" fill="#dc0a2d"/></svg></div>
-    <div id="dex-btn" class="corner-btn" onclick="openDex()" style="display:none;"><div></div></div>
-    <div id="level-chip">TRAINER LV 1</div>
+
 
     <div id="stats-view" style="position: fixed; inset: 0; padding: calc(env(safe-area-inset-top, 15px) + 5px) 20px calc(env(safe-area-inset-bottom, 10px) + 10px); background: linear-gradient(180deg, #2a5da8, #14315e); z-index: 2100; display: none; flex-direction: column; color: white;">
         <div style="display:flex; justify-content: space-between; align-items: center; border-bottom: 2px solid white; padding-bottom: 10px;"><h2 style="margin:0; font-family: var(--font-title);">TRAINER STATS</h2><div onclick="closeStats()" style="font-size:30px; cursor:pointer; line-height:1;">✕</div></div>
@@ -271,6 +302,16 @@
         </div>
     </div>
 
+    <div id="top-bar">
+        <div class="bar-group">
+            <div id="home-btn" class="bar-btn" onclick="goHome()" style="display:none;"><svg viewBox="0 0 24 24"><path d="M10 19l-7-7 7-7v4h8a3 3 0 0 1 3 3v5h-3v-4a1 1 0 0 0-1-1h-7v7z"/></svg></div>
+        </div>
+        <div id="level-chip">TRAINER LV 1</div>
+        <div class="bar-group right">
+            <div id="stats-btn" class="bar-btn" onclick="openStats()" style="display:none;"><svg width="21" height="21" viewBox="0 0 24 24"><rect x="3" y="12" width="5" height="9" rx="1.5" fill="#3d7dca"/><rect x="9.5" y="6" width="5" height="15" rx="1.5" fill="#ffcb05" stroke="#b8860b" stroke-width="1"/><rect x="16" y="9" width="5" height="12" rx="1.5" fill="#dc0a2d"/></svg></div>
+            <div id="dex-btn" class="bar-btn" onclick="openDex()" style="display:none;"><div></div></div>
+        </div>
+    </div>
     <div id="arena">
         <div class="card-slot">
             <div id="p-team" class="team-tracker"><div class="ball-proper"></div><div class="ball-proper"></div><div class="ball-proper"></div></div>
@@ -446,6 +487,7 @@ let dex = JSON.parse(localStorage.getItem('pmaths_dex_v1')) || [];
 let wins = parseInt(localStorage.getItem('pmaths_wins') || '0', 10);
 let stats = Object.assign({ a: 0, c: 0, wa: 0, wc: 0, wk: '', bs: 0, ccs: 0, cbs: 0, pb: 0 }, JSON.parse(localStorage.getItem('pmaths_stats')) || {});
 let consecRight = 0, consecWrong = 0, retryDmgBase = null;
+let missedSums = [], reviewGuardUntil = 0, reviewContinue = null;
 const todayStr = () => new Date().toDateString();
 function weekKey() { const d = new Date(); d.setDate(d.getDate() - (d.getDay() + 6) % 7); return d.toDateString(); }
 function recordAnswer(ok) {
@@ -454,6 +496,38 @@ function recordAnswer(ok) {
     localStorage.setItem('pmaths_stats', JSON.stringify(stats));
 }
 function updateLevelChip() { document.getElementById('level-chip').innerText = `TRAINER LV ${wins + 1}`; }
+const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+let pendingPraise = false;
+const PHRASES = {
+    praise: ["Brilliant!", "Well done!", "Spot on!", "Super!", "Great work!", "Fantastic!", "Nice one!", "You've got it!"],
+    attack: [
+        (p, m) => `${p} uses ${m}!`, (p, m) => `${p} attacks with ${m}!`,
+        (p, m) => `Go, ${p}! Use ${m}!`, (p, m) => `${p} strikes with ${m}!`, (p, m) => `Here we go! ${p} uses ${m}!`
+    ],
+    hpq: [
+        o => `How much HP does ${o} have left?`, o => `What's ${o}'s HP now?`,
+        o => `Work out how much HP ${o} has left!`, o => `How many hit points does ${o} have left?`
+    ],
+    wrong: ["Not quite!", "Almost!", "Good try!", "Oops, not this time!", "So close!"],
+    heal: [
+        (p, pot) => `Using the ${pot}, how much HP does ${p} have now?`,
+        (p, pot) => `${p} drinks the ${pot}! What's their HP now?`,
+        (p, pot) => `Time to heal! What is ${p}'s HP after the ${pot}?`
+    ],
+    catchIntro: [
+        n => `${n} is weak! Solve the sum to catch it!`, n => `Great battling! Now solve the sum to catch ${n}!`,
+        n => `Quick! Answer this to catch ${n}!`, n => `Here's your chance to catch ${n}! Solve the sum!`
+    ],
+    gotcha: [
+        n => `Gotcha! You caught ${n}!`, n => `Amazing! ${n} was caught!`,
+        n => `Fantastic! ${n} joined your team!`, n => `Yes! You caught ${n}! What a catch!`
+    ],
+    flee: [
+        n => `Oh no! ${n} ran away!`, n => `So close! ${n} escaped!`, n => `Oh dear! ${n} broke free and ran away!`
+    ],
+    champion: ["Champion! Amazing work!", "You did it! You're the champion!", "Incredible! What a trainer you are!", "Victory! Well battled, champion!"],
+    defeat: ["So close! Don't give up, keep training!", "Never mind! You'll win next time!", "Good battle! Have another go!"]
+};
 let shinyDex = JSON.parse(localStorage.getItem('pmaths_shiny_v1')) || [];
 const synth = window.speechSynthesis;
 const ART = i => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${i}.png`;
@@ -478,13 +552,22 @@ async function loadImg(img, url, fallbackUrl) {
 
 /* ================= VOICE ================= */
 let ukVoice = null;
+/* Score every available voice: British English + female + high-quality (Natural/Enhanced/Premium) wins */
+function scoreVoice(v) {
+    if (!v.lang || !/^en/i.test(v.lang)) return -1;
+    let s = 0; const n = v.name || '';
+    if (/en[-_]GB/i.test(v.lang)) s += 40;
+    if (/natural/i.test(n)) s += 30;                                    // Edge neural voices
+    if (/enhanced|premium/i.test(n)) s += 22;                           // iOS downloaded high-quality voices
+    if (/sonia|libby|maisie|hollie|olivia|kate|serena|stephanie|martha|susan|hazel|google uk english female/i.test(n)) s += 25;
+    if (/\bmale\b|daniel|arthur|ryan|thomas|oliver|george|aaron|fred/i.test(n)) s -= 20; // prefer a female voice
+    if (v.localService === false) s += 4;                               // remote (Google) voices sound better
+    return s;
+}
 function pickVoice() {
     const vs = synth.getVoices(); if (!vs.length) return;
-    const prefs = [/Sonia.*Natural/i, /Libby.*Natural/i, /Maisie.*Natural/i, /Ryan.*Natural/i, /Thomas.*Natural/i,
-                   /Google UK English Female/i, /Google UK English Male/i,
-                   /Sonia/i, /Libby/i, /Serena/i, /Kate/i, /Stephanie/i, /Daniel/i, /Martha/i, /Arthur/i];
-    for (const p of prefs) { const v = vs.find(v => p.test(v.name) && v.lang.startsWith('en')); if (v) { ukVoice = v; return; } }
-    ukVoice = vs.find(v => v.lang === 'en-GB') || vs.find(v => v.lang.startsWith('en')) || null;
+    const ranked = vs.map(v => [scoreVoice(v), v]).filter(([s]) => s >= 0).sort((a, b) => b[0] - a[0]);
+    ukVoice = ranked.length ? ranked[0][1] : null;
 }
 if (synth) { synth.onvoiceschanged = pickVoice; pickVoice(); }
 function speak(txt) {
@@ -492,9 +575,9 @@ function speak(txt) {
     try {
         synth.cancel();
         const clean = txt.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{2640}\u{2642}]/gu, "").replace(/-/g, " ").replace(/\s+/g, " ").trim();
-        const u = new SpeechSynthesisUtterance(clean.toLowerCase());
+        const u = new SpeechSynthesisUtterance(clean.charAt(0) + clean.slice(1).toLowerCase());
         if (ukVoice) u.voice = ukVoice;
-        u.lang = 'en-GB'; u.rate = 0.98; u.pitch = 1.05;
+        u.lang = 'en-GB'; u.rate = 1.0; u.pitch = 1.04;
         synth.speak(u);
     } catch (e) {}
 }
@@ -673,7 +756,7 @@ function startGame(lvl) {
     localStorage.setItem('pmaths_diff', lvl);
     updateLevelChip(); document.getElementById('level-chip').style.display = 'block';
     consecRight = 0; consecWrong = 0; retryDmgBase = null;
-    pIdx = 0; oIdx = 0; caughtThisBattle = []; mistakesThisBattle = 0;
+    pIdx = 0; oIdx = 0; caughtThisBattle = []; mistakesThisBattle = 0; missedSums = [];
     potionsUsed = { reg: false, sup: false, hyp: false };
     ['reg', 'sup', 'hyp'].forEach(k => document.getElementById('btn-' + k).classList.remove('used'));
     rollHeals(); pickTeams();
@@ -683,7 +766,7 @@ function rematch() { startGame(difficulty); }
 function saveBattle() {
     if (!playerTeam[pIdx] || !oppTeam[oIdx]) return;
     const slim = t => t.map(u => ({ id: u.id, shiny: !!u.shiny, hp: u.hp }));
-    localStorage.setItem('pmaths_save', JSON.stringify({ difficulty, pIdx, oIdx, pt: slim(playerTeam), ot: slim(oppTeam), potions: potionsUsed, caught: caughtThisBattle, mistakes: mistakesThisBattle }));
+    localStorage.setItem('pmaths_save', JSON.stringify({ difficulty, pIdx, oIdx, pt: slim(playerTeam), ot: slim(oppTeam), potions: potionsUsed, caught: caughtThisBattle, mistakes: mistakesThisBattle, missed: missedSums }));
 }
 function refreshResumeBtn() { document.getElementById('resume-btn').style.display = localStorage.getItem('pmaths_save') ? 'block' : 'none'; }
 function resumeBattle() {
@@ -699,7 +782,7 @@ function resumeBattle() {
     document.getElementById('arena').style.opacity = '1';
     updateLevelChip(); document.getElementById('level-chip').style.display = 'block';
     pIdx = s.pIdx; oIdx = s.oIdx;
-    caughtThisBattle = s.caught || []; mistakesThisBattle = s.mistakes || 0;
+    caughtThisBattle = s.caught || []; mistakesThisBattle = s.mistakes || 0; missedSums = s.missed || [];
     consecRight = 0; consecWrong = 0; retryDmgBase = null;
     potionsUsed = s.potions || { reg: false, sup: false, hyp: false };
     ['reg', 'sup', 'hyp'].forEach(k => document.getElementById('btn-' + k).classList.toggle('used', !!potionsUsed[k]));
@@ -712,6 +795,7 @@ function goHome() {
     gameState.mode = 'idle';
     document.getElementById('end-screen').style.display = 'none';
     document.getElementById('catch-screen').classList.remove('open');
+    document.getElementById('review-overlay').classList.remove('open'); reviewContinue = null;
     document.getElementById('overlay').style.display = 'flex';
     ['home-btn', 'dex-btn', 'stats-btn'].forEach(id => document.getElementById(id).style.display = 'none');
     localStorage.removeItem('pmaths_save'); refreshResumeBtn();
@@ -766,11 +850,14 @@ function nextTurn() {
         retryDmgBase = null;
     }
     gameState.currentMove = m; gameState.mode = 'atk'; gameState.answer = o.hp - m.dmg;
+    gameState.expLen = String(gameState.answer).length;
+    gameState.q = { v1: o.hp, v2: m.dmg, op: '−' };
     renderMoves('p', pm); renderMoves('o', om);
-    const qText = `${p.name} uses ${m.name}! How much HP does ${o.name} have left?`;
+    const qText = `${pick(PHRASES.attack)(p.name, m.name)} ${pick(PHRASES.hpq)(o.name)}`;
     document.getElementById('question').innerText = qText;
     document.getElementById('sum-v1').innerText = o.hp; document.getElementById('sum-v2').innerText = m.dmg; document.getElementById('sum-op').innerText = "−";
-    speak(qText);
+    speak((pendingPraise ? pick(PHRASES.praise) + ' ' : '') + qText);
+    pendingPraise = false;
     saveBattle();
     startTimer();
 }
@@ -785,26 +872,41 @@ function useHeal(potionName) {
     document.getElementById('btn-' + key).classList.add('used');
     gameState.mode = 'heal';
     const amt = curHeals[key];
-    clearAns();
     gameState.rawHealingResult = p.hp + amt;
     gameState.answer = Math.min(p.max, p.hp + amt);
-    const qText = `Using the ${potionName}, how much HP does ${p.name} have now?`;
+    gameState.expLen = Math.max(String(gameState.answer).length, String(gameState.rawHealingResult).length);
+    gameState.q = { v1: p.hp, v2: amt, op: '+' };
+    clearAns();
+    const qText = pick(PHRASES.heal)(p.name, potionName);
     document.getElementById('question').innerText = qText;
     document.getElementById('sum-v1').innerText = p.hp; document.getElementById('sum-v2').innerText = amt; document.getElementById('sum-op').innerText = "+";
     speak(qText); startTimer();
 }
 
-function updateAnswerMirror() {
-    const txt = document.getElementById('answer-text').innerText;
-    document.getElementById('sum-ans').innerText = txt;
-    if (gameState.mode === 'catch') document.getElementById('catch-sum').innerText = `${gameState.catchA} + ${gameState.catchB} = ${txt || '?'}`;
+let ansBuf = '';
+function renderAnswer() {
+    const d = document.getElementById('answer-text');
+    if (difficulty === 'easy' && gameState.expLen) { // place-value scaffolding: one slot per expected digit
+        let h = '';
+        for (let i = 0; i < gameState.expLen; i++) h += `<span class="digit-slot${i < ansBuf.length ? ' filled' : ''}">${ansBuf[i] || ''}</span>`;
+        d.innerHTML = h;
+    } else d.innerText = ansBuf;
 }
-function press(n) { playSfx('press'); const d = document.getElementById('answer-text'); if (d.innerText.length < 4) d.innerText += n; updateAnswerMirror(); }
-function clearAns() { document.getElementById('answer-text').innerText = ""; updateAnswerMirror(); }
-function readAns() { return parseInt(document.getElementById('answer-text').innerText); }
+function updateAnswerMirror() {
+    document.getElementById('sum-ans').innerText = ansBuf;
+    if (gameState.mode === 'catch') document.getElementById('catch-sum').innerText = `${gameState.catchA} + ${gameState.catchB} = ${ansBuf || '?'}`;
+}
+function press(n) {
+    playSfx('press');
+    const cap = (difficulty === 'easy' && gameState.expLen) ? gameState.expLen : 4;
+    if (ansBuf.length < cap) ansBuf += n;
+    renderAnswer(); updateAnswerMirror();
+}
+function clearAns() { ansBuf = ''; renderAnswer(); updateAnswerMirror(); }
+function readAns() { return parseInt(ansBuf); }
 
 function submit() {
-    if (gameState.mode === 'idle') return;
+    if (gameState.mode === 'idle' || gameState.mode === 'review') return;
     if (gameState.mode === 'atk' && gameState.currentMove === null) return;
     clearInterval(timerId);
     const p = playerTeam[pIdx], o = oppTeam[oIdx];
@@ -820,6 +922,9 @@ function submit() {
 
     if (isCorrect) {
         playSfx('chime');
+        const da = document.getElementById('display-answer');
+        da.classList.remove('ok-anim'); void da.offsetWidth; da.classList.add('ok-anim');
+        pendingPraise = Math.random() < 0.55; // often (not always) open the next question with praise
         if (gameState.mode === 'atk') {
             const dmg = gameState.currentMove.dmg;
             gameState.currentMove = null;
@@ -843,27 +948,48 @@ function submit() {
         playSfx('wrong');
         mistakesThisBattle++;
         const ans = gameState.answer;
-        document.getElementById('question').innerText = `Not quite — the answer was ${ans}!`;
-        speak(`Not quite! The answer was ${ans}.`);
-        const counter = (o.moves2 || [{ name: 'Tackle', icon: '⭐', dmg: 50 }])[Math.floor(Math.random() * 2)];
+        const oops = pick(PHRASES.wrong);
+        missedSums.push(`${gameState.q.v1} ${gameState.q.op} ${gameState.q.v2} = ${ans}`);
+        document.getElementById('question').innerText = `${oops} The answer was ${ans}!`;
+        speak(`${oops} The answer was ${ans}.`);
+        const counter = (o.moves2 || [{ name: 'Tackle', type: 'normal', dmg: 50 }])[Math.floor(Math.random() * 2)];
         gameState.currentMove = null;
-        setTimeout(() => showToast(`${o.name} fights back!`), 700);
-        oCard.classList.add('lunge-left');
-        setTimeout(() => {
-            fireProjectile(oCard, pCard, oTheme.c2, () => {
-                triggerImpact(); playSfx('impact');
-                const c = centerOf(pCard); burst(c.x, c.y, [oTheme.c2, '#fff']);
-                damagePopup(pCard, `-${counter.dmg}`, '#ff5252');
-                p.hp = Math.max(0, p.hp - counter.dmg);
-                pCard.classList.add('damage-shake'); oCard.classList.remove('lunge-left');
-                refreshBars();
-                if (p.hp <= 0) { setTimeout(() => handleKO('p'), 400); return; }
-                finishTurn(1100);
-            });
-        }, 900);
+        openReview(val, ans, () => {
+            setTimeout(() => showToast(`${o.name} fights back!`), 500);
+            oCard.classList.add('lunge-left');
+            setTimeout(() => {
+                fireProjectile(oCard, pCard, oTheme.c2, () => {
+                    triggerImpact(); playSfx('impact');
+                    const c = centerOf(pCard); burst(c.x, c.y, [oTheme.c2, '#fff']);
+                    damagePopup(pCard, `-${counter.dmg}`, '#ff5252');
+                    p.hp = Math.max(0, p.hp - counter.dmg);
+                    pCard.classList.add('damage-shake'); oCard.classList.remove('lunge-left');
+                    refreshBars();
+                    if (p.hp <= 0) { setTimeout(() => handleKO('p'), 400); return; }
+                    finishTurn(1100);
+                });
+            }, 700);
+        });
     }
 }
 
+function openReview(theirVal, correctAns, onContinue) {
+    gameState.prevMode = gameState.mode; gameState.mode = 'review';
+    reviewContinue = onContinue;
+    reviewGuardUntil = Date.now() + 600; // ignore taps for a beat so it can't be skipped accidentally
+    document.getElementById('review-sum').innerText = `${gameState.q.v1} ${gameState.q.op} ${gameState.q.v2} = ?`;
+    const yours = document.getElementById('rev-yours');
+    if (isNaN(theirVal)) { yours.innerText = 'No answer'; yours.classList.add('noans'); }
+    else { yours.innerText = String(theirVal); yours.classList.remove('noans'); }
+    document.getElementById('rev-correct').innerText = String(correctAns);
+    document.getElementById('review-overlay').classList.add('open');
+}
+function reviewTap() {
+    if (Date.now() < reviewGuardUntil) return;
+    document.getElementById('review-overlay').classList.remove('open');
+    const cb = reviewContinue; reviewContinue = null;
+    if (cb) cb();
+}
 function finishTurn(extraDelay = 650) {
     setTimeout(() => {
         document.getElementById('p-card').classList.remove('damage-shake');
@@ -905,8 +1031,11 @@ function startCatch(target) {
     const img = document.getElementById('catch-img');
     loadImg(img, target.img, target.shiny ? SPRITE_SMS(target.id) : SPRITE_SM(target.id));
     img.style.opacity = '1'; img.classList.remove('escape');
-    document.getElementById('catch-title').innerText = `${target.shiny ? '✨ SHINY ' : ''}${target.name} is weak! Solve the sum to catch it!`;
+    const intro = pick(PHRASES.catchIntro)(target.name);
+    document.getElementById('catch-title').innerText = (target.shiny ? '✨ SHINY! ✨ ' : '') + intro;
     const s = catchSum(); gameState.answer = s.ans; gameState.catchA = s.a; gameState.catchB = s.b;
+    gameState.expLen = String(s.ans).length;
+    gameState.q = { v1: s.a, v2: s.b, op: '+' };
     document.getElementById('catch-sum').innerText = `${s.a} + ${s.b} = ?`;
     document.getElementById('catch-result').className = ''; document.getElementById('catch-result').innerText = '';
     document.getElementById('catch-sub').innerText = gameState.dailyBonus ? '✨ DAILY BONUS: guaranteed catch! ✨' : '';
@@ -914,7 +1043,7 @@ function startCatch(target) {
     scr.classList.add('open');
     clearAns();
     playSfx('capture');
-    speak(`${target.name} is weak! Solve the sum to catch it!`);
+    speak((target.shiny ? 'Wow, a shiny! ' : '') + intro);
     startTimer();
 }
 
@@ -945,9 +1074,10 @@ function resolveCatch(success, correctAns) {
                     playSfx('gotcha');
                     burst(c.x, c.y, ['#ffe97a', '#fff', '#8cf0ff'], 30, 8);
                     burst(c.x, c.y - 60, ['#ffd700', '#fff'], 18, 6);
-                    result.innerText = `You caught ${target.name}!`;
+                    const line = pick(PHRASES.gotcha)(target.name);
+                    result.innerText = line.replace(/^(Gotcha!|Amazing!|Fantastic!|Yes!)\s*/, '');
                     result.style.color = '#ffd700'; result.classList.add('pop');
-                    speak(`Gotcha! You caught ${target.name}!`);
+                    speak(line);
                     if (!dex.includes(target.id)) dex.push(target.id);
                     if (target.shiny && !shinyDex.includes(target.id)) shinyDex.push(target.id);
                     localStorage.setItem('pmaths_dex_v1', JSON.stringify(dex));
@@ -959,6 +1089,7 @@ function resolveCatch(success, correctAns) {
                 }, 350);
             } else {
                 stats.ccs = 0; localStorage.setItem('pmaths_stats', JSON.stringify(stats));
+                missedSums.push(`${gameState.q.v1} + ${gameState.q.v2} = ${correctAns}`);
                 playSfx('burstopen');
                 triggerImpact();
                 ball.style.display = 'none';
@@ -966,8 +1097,8 @@ function resolveCatch(success, correctAns) {
                 playSfx('flee');
                 result.innerText = `${target.name} ran away!`;
                 result.style.color = '#b8c6e8'; result.classList.add('pop');
-                sub.innerText = `The answer was ${correctAns}.`;
-                speak(`Oh no! The answer was ${correctAns}. ${target.name} ran away!`);
+                if (wasWrong) sub.innerText = `The answer was ${correctAns}.`;
+                speak(`${wasWrong ? 'The answer was ' + correctAns + '. ' : ''}${pick(PHRASES.flee)(target.name)}`);
                 setTimeout(() => endCatch(ball), 2100);
             }
         });
@@ -1029,6 +1160,12 @@ function showFinal(win) {
         loadImg(img, isShiny ? SPRITE_SMS(id) : SPRITE_SM(id), isShiny ? ARTS(id) : ART(id));
         parade.appendChild(img);
     });
+    const recap = document.getElementById('recap-panel');
+    if (missedSums.length) {
+        const shown = missedSums.slice(0, 6);
+        document.getElementById('recap-list').innerHTML = shown.map(s => `<div>${s}</div>`).join('') + (missedSums.length > 6 ? `<div>…and ${missedSums.length - 6} more</div>` : '');
+        recap.style.display = 'block';
+    } else recap.style.display = 'none';
     const nudge = document.getElementById('nudge-btn');
     if (win && mistakesThisBattle === 0) { stats.pb++; localStorage.setItem('pmaths_stats', JSON.stringify(stats)); }
     if (win && mistakesThisBattle === 0 && difficulty !== 'hard') {
@@ -1041,9 +1178,9 @@ function showFinal(win) {
         wins++; localStorage.setItem('pmaths_wins', String(wins)); updateLevelChip();
         document.getElementById('end-msg').innerText += ` ⭐ Trainer Level ${wins + 1}!`;
         playSfx('fanfare');
-        speak(mistakesThisBattle === 0 ? "Perfect battle! Champion!" : (nCaught ? `Champion! And you caught ${nCaught} new pokemon!` : "Champion! Amazing work!"));
+        speak(mistakesThisBattle === 0 ? "Perfect battle! Not a single mistake. Champion!" : (nCaught ? `${pick(PHRASES.champion)} And you caught ${nCaught} new pokemon!` : pick(PHRASES.champion)));
         for (let i = 0; i < 10; i++) setTimeout(() => burst(Math.random() * canvas.width, Math.random() * canvas.height * .5, [`hsl(${Math.random()*360},100%,65%)`, '#fff'], 20, 7), i * 300);
-    } else speak("So close! Don't give up, keep training!");
+    } else speak(pick(PHRASES.defeat));
 }
 
 function startTimer() {
