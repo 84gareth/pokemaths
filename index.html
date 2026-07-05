@@ -25,9 +25,10 @@
         #overlay, #end-screen { position: fixed; inset: 0; background: #3d7dca; z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 15px; overflow: hidden; }
         .sunburst { position: absolute; width: 250%; height: 250%; background: repeating-conic-gradient(from 0deg, #3d7dca 0deg 20deg, #4b8fe0 20deg 40deg); animation: rotateSun 24s linear infinite; opacity: 0.7; }
         img.float-ball { position: absolute; width: 46px; height: 46px; image-rendering: pixelated; filter: drop-shadow(0 4px 4px rgba(0,0,0,.35)); animation: floatBall 6s ease-in-out infinite; opacity: .95; }
-        .big-logo { position: relative; z-index: 5; font-family: var(--font-title); font-size: clamp(44px, 14vw, 90px); color: var(--poke-yellow); -webkit-text-stroke: 2px var(--poke-blue); filter: drop-shadow(0 7px 0 var(--poke-blue)); letter-spacing: 2px; animation: logoBounce 2.4s ease-in-out infinite; margin-bottom: 6px; }
+        img.float-mon { position: absolute; width: 72px; height: 72px; image-rendering: pixelated; filter: drop-shadow(0 4px 5px rgba(0,0,0,.35)); animation: floatBall 7.5s ease-in-out infinite; opacity: .95; }
+        .big-logo { position: relative; z-index: 5; padding-top: .2em; font-family: var(--font-title); font-size: clamp(44px, 14vw, 90px); color: var(--poke-yellow); -webkit-text-stroke: 2px var(--poke-blue); filter: drop-shadow(0 7px 0 var(--poke-blue)); letter-spacing: 2px; animation: logoBounce 2.4s ease-in-out infinite; margin-bottom: 6px; }
         .eacc { position: relative; display: inline-block; }
-        .eacc::before { content: ''; position: absolute; left: 56%; top: -0.12em; width: .36em; height: .13em; border-radius: .08em; background: var(--poke-yellow); box-shadow: 0 0 0 2px var(--poke-blue), 0 .06em 0 var(--poke-blue); transform: translateX(-50%) rotate(-16deg); }
+        .eacc::before { content: ''; position: absolute; left: 50%; top: -0.17em; width: .38em; height: .1em; border-radius: .05em; background: var(--poke-yellow); box-shadow: 0 0 0 0.028em var(--poke-blue); transform: translateX(-42%) rotate(-13deg); }
         .tagline { position: relative; z-index: 5; font-weight: 800; font-size: 17px; color: #eaf4ff; text-shadow: 0 2px 3px rgba(0,0,0,.3); margin-bottom: 18px; }
         .diff-row { position: relative; z-index: 5; display: flex; justify-content: center; gap: 12px; width: 100%; max-width: 500px; }
         .diff-card { flex: 1; background: linear-gradient(#ffffff, #f2ecdc); color: #333; padding: 14px 5px 12px; border-radius: 18px; border: 4px solid var(--poke-yellow); display: flex; flex-direction: column; align-items: center; cursor: pointer; box-shadow: 0 6px 0 #d4a017; font-family: var(--font-title); font-size: 18px; transition: transform .1s; }
@@ -62,8 +63,7 @@
         #arena { height: 29vh; display: flex; justify-content: center; align-items: stretch; gap: 8px; padding: 2px 6px; opacity: 0; transition: opacity 0.5s; }
         .card-slot { flex: 1; max-width: 280px; display: flex; flex-direction: column; }
         .team-tracker { display: flex; justify-content: center; gap: 6px; margin-bottom: 3px; height: 19px; flex-shrink: 0; }
-        .ball-proper { width: 18px; height: 18px; background: white; border-radius: 50%; border: 2px solid #333; position: relative; overflow: hidden; }
-        .ball-proper::before { content: ""; position: absolute; top: 0; width: 100%; height: 50%; background: #eb4d4b; border-bottom: 2px solid #333; }
+        .ball-proper { width: 18px; height: 18px; border-radius: 50%; border: 2px solid #333; position: relative; overflow: hidden; background: linear-gradient(180deg, #eb4d4b 0 calc(50% - 1px), #333 calc(50% - 1px) calc(50% + 1px), #fff calc(50% + 1px)); }
         .ball-proper::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 7px; height: 7px; background: #fff; border: 1.5px solid #333; border-radius: 50%; z-index: 2; }
         .ball-proper.spent { filter: grayscale(1) brightness(0.25); opacity: 0.5; }
 
@@ -124,8 +124,7 @@
         .num-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #a9b4c0; }
         .btn-submit { flex: 1.2; background: linear-gradient(#f2655f, #d63a30); border-radius: 20px; border: 5px solid white; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 6px 0 #a02015; transition: transform .08s; }
         .btn-submit:active { transform: translateY(4px); box-shadow: 0 2px 0 #a02015; }
-        .pokeball-icon { width: 44px; height: 44px; background: white; border-radius: 50%; border: 3.5px solid #333; position: relative; overflow: hidden; animation: pulsePoke 2s infinite; }
-        .pokeball-icon::before { content: ""; position: absolute; top: 0; width: 100%; height: 50%; background: #eb4d4b; border-bottom: 3px solid #333; }
+        .pokeball-icon { width: 44px; height: 44px; border-radius: 50%; border: 3.5px solid #333; position: relative; overflow: hidden; animation: pulsePoke 2s infinite; background: linear-gradient(180deg, #eb4d4b 0 calc(50% - 2px), #333 calc(50% - 2px) calc(50% + 2px), #fff calc(50% + 2px)); }
         .pokeball-icon::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 16px; height: 16px; background: white; border: 3px solid #333; border-radius: 50%; z-index: 2; }
 
         #review-overlay { position: fixed; inset: 0; z-index: 1700; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 14px; background: rgba(8, 15, 38, .88); padding: 20px; }
@@ -274,7 +273,9 @@
         <img class="float-ball" style="top:10%; left:8%;" alt="">
         <img class="float-ball" style="top:72%; left:82%; animation-delay:-2s;" alt="">
         <img class="float-ball" style="top:80%; left:12%; animation-delay:-4s;" alt="">
-        <h1 class="big-logo">Pok<span class="eacc">e</span>Maths</h1>
+        <img class="float-mon" style="top:16%; left:72%; animation-delay:-1.5s;" alt="">
+        <img class="float-mon" style="top:62%; left:5%; animation-delay:-5s;" alt="">
+        <h1 class="big-logo">POK<span class="eacc">E</span>MATHS</h1>
         <div class="tagline">Battle with your brain!</div>
         <div id="ver" style="position:absolute; bottom: calc(env(safe-area-inset-bottom, 8px) + 8px); right: 14px; z-index: 6; font-weight: 800; font-size: 12px; color: rgba(255,255,255,.65);"></div>
         <button id="resume-btn" class="end-btn btn-gold" style="display:none; position:relative; z-index:5; margin: 0 0 16px; width: 230px;" onclick="resumeBattle()">▶ RESUME BATTLE</button>
@@ -892,7 +893,8 @@ function tone(freq, start, dur, type = 'sine', vol = 0.1, glideTo = null) {
     o.start(audioCtx.currentTime + start); o.stop(audioCtx.currentTime + start + dur + 0.05);
 }
 function playSfx(type) {
-    if (type === 'press') tone(440, 0, .06, 'square', .05);
+    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); // iOS suspends the context on app switch/lock
+    if (type === 'press') { tone(510 + Math.random() * 150, 0, .05, 'square', .06); tone(1250, .015, .05, 'sine', .045); }
     if (type === 'chime') { tone(523, 0, .15, 'triangle', .12); tone(659, .08, .15, 'triangle', .12); tone(784, .16, .25, 'triangle', .12); }
     if (type === 'wrong') { tone(300, 0, .18, 'sawtooth', .08, 180); tone(180, .16, .3, 'sawtooth', .08, 100); }
     if (type === 'whoosh') tone(220, 0, .32, 'sawtooth', .09, 950);
@@ -907,7 +909,12 @@ function playSfx(type) {
     if (type === 'burstopen') { tone(350, 0, .16, 'sawtooth', .11, 750); tone(950, .05, .1, 'sine', .07, 1600); }
     if (type === 'flee') { tone(600, 0, .2, 'sine', .08, 300); tone(300, .18, .3, 'sine', .08, 150); }
     if (type === 'fanfare') { const m = [[523,0],[523,.14],[523,.28],[659,.42],[784,.62],[659,.82],[1046,.98]]; m.forEach(([f,t]) => { tone(f, t, .3, 'triangle', .12); tone(f/2, t, .3, 'square', .04); }); }
+    if (type === 'ui') { tone(620, 0, .07, 'sine', .06); tone(930, .06, .09, 'sine', .05); }
+    if (type === 'cardin') { tone(392, 0, .1, 'triangle', .08); tone(587, .08, .12, 'triangle', .09); }
+    if (type === 'potion') { tone(740, 0, .07, 'sine', .07); tone(988, .06, .1, 'sine', .06); }
 }
+// belt and braces: first touch anywhere re-wakes the audio engine
+document.addEventListener('pointerdown', () => { if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); }, { passive: true });
 
 /* ================= PARTICLE FX ================= */
 const canvas = document.getElementById('fx-canvas'), ctx = canvas.getContext('2d');
@@ -921,6 +928,11 @@ function randomizeBalls() {
         img.onerror = () => { img.style.display = 'none'; };
         img.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${pool[i % pool.length]}.png`;
     });
+    document.querySelectorAll('img.float-mon').forEach(img => {
+        img.onerror = () => { img.style.display = 'none'; };
+        const r = roster[Math.floor(Math.random() * roster.length)];
+        img.style.display = ''; img.src = SPRITE_SM(r.id);
+    });
 }
 function markLastPlayed() {
     const last = localStorage.getItem('pmaths_diff');
@@ -928,7 +940,7 @@ function markLastPlayed() {
 }
 window.addEventListener('resize', () => { setAppH(); initCanvas(); sizeCatchScreen(); });
 window.addEventListener('orientationchange', () => setTimeout(() => { setAppH(); initCanvas(); sizeCatchScreen(); }, 150));
-const GAME_VERSION = 21; // bump on each release; shown on the title screen so you can spot stale caches
+const GAME_VERSION = 22; // bump on each release; shown on the title screen so you can spot stale caches
 document.getElementById('ver').innerText = 'v' + GAME_VERSION;
 if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {})); }
 document.addEventListener('dblclick', e => e.preventDefault(), { passive: false });
@@ -1203,6 +1215,7 @@ function useHeal(potionName) {
     document.getElementById('heal-sum').innerText = `${p.hp} + ${amt} = ?`;
     document.getElementById('heal-timerbar').style.display = difficulty === 'easy' ? 'none' : 'block';
     document.getElementById('heal-screen').classList.add('open');
+    playSfx('potion');
     speak(qText); startTimer();
 }
 
@@ -1317,9 +1330,11 @@ function openReview(theirVal, correctAns, onContinue) {
     else { yours.innerText = String(theirVal); yours.classList.remove('noans'); }
     document.getElementById('rev-correct').innerText = String(correctAns);
     document.getElementById('review-overlay').classList.add('open');
+    playSfx('ui');
 }
 function reviewTap() {
     if (Date.now() < reviewGuardUntil) return;
+    playSfx('press');
     document.getElementById('review-overlay').classList.remove('open');
     const cb = reviewContinue; reviewContinue = null;
     if (cb) cb();
@@ -1482,6 +1497,7 @@ function endCatch(ball) {
     }
 }
 function proceedAfterOppKO() {
+    playSfx('cardin');
     gameState.catchTarget = null;
     oIdx++; rollHeals();
     if (oIdx > 2) showFinal(true);
@@ -1564,6 +1580,7 @@ function openDex() {
     list.querySelectorAll('.dex-entry').forEach((el, i) => { el.onclick = () => dexEntryTap(roster[i]); });
     document.getElementById('dex-title').innerText = `CAUGHT: ${count}/150${shinyDex.length ? ' ✨' + shinyDex.length : ''}`;
     document.getElementById('pokedex-view').style.display = 'flex';
+    playSfx('ui');
     localStorage.setItem('pmaths_dex_seen', JSON.stringify(dex)); // NEW badges show for this viewing only
 }
 function closeDex() { document.getElementById('pokedex-view').style.display = 'none'; }
@@ -1586,7 +1603,7 @@ function dexEntryTap(r) {
     document.querySelector('.detail-card').style.borderColor = isShiny ? '#ffd700' : th.c2;
     document.getElementById('detail-flair').innerText = isShiny ? '✨ Shiny caught! ✨' : '';
     document.getElementById('detail-modal').style.display = 'flex';
-    speak(`${nice}. ${sentence}`);
+    playSfx('ui'); // sentence stays silent so they read it themselves
 }
 function closeDetail() { document.getElementById('detail-modal').style.display = 'none'; }
 function openStats() {
@@ -1602,6 +1619,7 @@ function openStats() {
     document.getElementById('stats-grid').innerHTML = cards.map(([e, n, l]) =>
         `<div class="stat-card"><div class="stat-emoji">${e}</div><div class="stat-num">${n}</div><div class="stat-label">${l}</div></div>`).join('');
     document.getElementById('stats-view').style.display = 'flex';
+    playSfx('ui');
 }
 function closeStats() { document.getElementById('stats-view').style.display = 'none'; }
 function askReset() {

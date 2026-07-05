@@ -1,6 +1,6 @@
 /* PokéMaths service worker - makes the game fully playable offline after the first visit.
    When you update the game, bump the version below (v1 -> v2) so old assets are cleared. */
-const CACHE = 'pokemaths-v3';
+const CACHE = 'pokemaths-v4';
 const CORE = ['./', './index.html', './manifest.json', './icon.png', './icon-192.png'];
 
 self.addEventListener('install', e => {
