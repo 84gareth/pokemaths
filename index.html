@@ -601,11 +601,17 @@ function speak(txt) {
         if (!ukVoice || synth.getVoices().indexOf(ukVoice) === -1) pickVoice();
         synth.cancel();
         const clean = txt.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{2640}\u{2642}]/gu, "").replace(/-/g, " ").replace(/\s+/g, " ").trim();
-        const u = new SpeechSynthesisUtterance(clean.charAt(0) + clean.slice(1).toLowerCase());
-        if (ukVoice) u.voice = ukVoice;
-        u.lang = ukVoice ? ukVoice.lang : 'en-GB'; // mismatched lang makes iOS ignore the chosen voice and fall back to Daniel
-        u.rate = 1.0; u.pitch = 1.04;
-        synth.speak(u);
+        // speak sentence by sentence: the queue gap adds a natural pause even on basic voices
+        const parts = clean.match(/[^.!?]+[.!?]*/g) || [clean];
+        const compact = ukVoice && /compact/i.test(ukVoice.voiceURI || '');
+        parts.forEach(p => {
+            const s = p.trim(); if (!s) return;
+            const u = new SpeechSynthesisUtterance(s.charAt(0) + s.slice(1).toLowerCase());
+            if (ukVoice) u.voice = ukVoice;
+            u.lang = ukVoice ? ukVoice.lang : 'en-GB'; // mismatched lang makes iOS ignore the chosen voice
+            u.rate = compact ? 0.9 : 1.0; u.pitch = 1.04; // basic voices rush - slow them a touch
+            synth.speak(u);
+        });
     } catch (e) {}
 }
 
@@ -650,7 +656,7 @@ function markLastPlayed() {
 }
 window.addEventListener('resize', () => { setAppH(); initCanvas(); sizeCatchScreen(); });
 window.addEventListener('orientationchange', () => setTimeout(() => { setAppH(); initCanvas(); sizeCatchScreen(); }, 150));
-const GAME_VERSION = 19; // bump on each release; shown on the title screen so you can spot stale caches
+const GAME_VERSION = 20; // bump on each release; shown on the title screen so you can spot stale caches
 document.getElementById('ver').innerText = 'v' + GAME_VERSION;
 if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {})); }
 document.addEventListener('dblclick', e => e.preventDefault(), { passive: false });
