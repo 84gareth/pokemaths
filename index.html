@@ -15,7 +15,7 @@
             --poke-yellow: #ffcb05; --poke-blue: #3d7dca; --pokedex-red: #dc0a2d; --card-gold: #ffd700;
             --type-p1: #ff8a50; --type-p2: #c62828; --type-o1: #9fa8da; --type-o2: #283593;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-main); user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-main); user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
         html { height: 100%; height: -webkit-fill-available; background: #2a5da8; }
         body { background: linear-gradient(180deg, #4b8fe0 0%, #2a5da8 100%); color: #fff; width: 100vw; display: flex; flex-direction: column; overflow: hidden;
                height: 100vh; height: -webkit-fill-available; height: 100dvh; height: var(--app-h, 100dvh); }
@@ -140,7 +140,7 @@
         .rev-val.noans { font-size: 20px; color: #999; padding-top: 6px; }
         #review-tap { font-weight: 800; font-size: 15px; color: #cfe0ff; animation: tapPulse 1.4s ease-in-out infinite; margin-top: 4px; }
         @keyframes tapPulse { 0%, 100% { opacity: .55; transform: scale(1); } 50% { opacity: 1; transform: scale(1.06); } }
-        .digit-slot { display: inline-flex; width: 25px; height: 31px; margin: 0 3px; border: 2.5px dashed #b9c2cc; border-radius: 8px; align-items: center; justify-content: center; font-size: 1.35rem; font-weight: 800; color: #2f3640; }
+        .digit-slot { display: inline-flex; width: 22px; height: 27px; margin: 0 2px; border: 2px dashed #b9c2cc; border-radius: 6px; align-items: center; justify-content: center; font-size: 1.15rem; line-height: 1; font-weight: 800; color: #2f3640; }
         .digit-slot.filled { border-style: solid; border-color: #3d7dca; background: #eaf3ff; }
         @keyframes okFlash { 0% { background: #7dff9b; box-shadow: 0 0 16px #4caf50; } 100% { background: #fff; } }
         #display-answer.ok-anim { animation: okFlash .4s ease; }
@@ -181,7 +181,7 @@
         .dex-entry.shiny { border-color: var(--card-gold); background: linear-gradient(160deg, rgba(255,215,0,.35), rgba(255,255,255,.14)); }
         .dex-entry { position: relative; cursor: pointer; }
         .dex-entry.fresh { animation: freshGlow 1.2s ease-in-out infinite alternate; }
-        .dex-entry.fresh::after { content: '✨'; position: absolute; top: -6px; right: -4px; font-size: 15px; }
+        .dex-entry.fresh::after { content: 'NEW'; position: absolute; top: -7px; right: -5px; background: #ff5252; color: #fff; font-size: 8px; font-weight: 800; font-family: var(--font-main); padding: 2px 5px 1px; border-radius: 7px; border: 1.5px solid #fff; letter-spacing: .5px; }
         .stat-card { background: rgba(255,255,255,.13); border: 2px solid rgba(255,255,255,.25); border-radius: 16px; padding: 14px 8px 10px; display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center; }
         .stat-emoji { font-size: 30px; line-height: 1; filter: drop-shadow(0 2px 2px rgba(0,0,0,.3)); }
         .stat-num { font-family: var(--font-title); font-size: 24px; color: var(--poke-yellow); text-shadow: 1px 2px 0 rgba(0,0,0,.35); padding-top: 4px; }
@@ -573,6 +573,8 @@ if (synth) { synth.onvoiceschanged = pickVoice; pickVoice(); }
 function speak(txt) {
     if (!synth) return;
     try {
+        // iOS often reports zero voices at load and never fires voiceschanged in standalone mode - re-pick lazily
+        if (!ukVoice || synth.getVoices().indexOf(ukVoice) === -1) pickVoice();
         synth.cancel();
         const clean = txt.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{2640}\u{2642}]/gu, "").replace(/-/g, " ").replace(/\s+/g, " ").trim();
         const u = new SpeechSynthesisUtterance(clean.charAt(0) + clean.slice(1).toLowerCase());
@@ -623,6 +625,7 @@ function markLastPlayed() {
 }
 window.addEventListener('resize', () => { setAppH(); initCanvas(); sizeCatchScreen(); });
 window.addEventListener('orientationchange', () => setTimeout(() => { setAppH(); initCanvas(); sizeCatchScreen(); }, 150));
+document.addEventListener('dblclick', e => e.preventDefault(), { passive: false });
 setAppH(); initCanvas(); markLastPlayed(); refreshResumeBtn();
 function drawStar(c, x, y, r, rot) {
     c.beginPath();
@@ -679,47 +682,49 @@ function damagePopup(el, txt, color) {
 function showToast(txt) { const t = document.getElementById('toast'); t.innerText = txt; t.classList.remove('show'); void t.offsetWidth; t.classList.add('show'); }
 
 /* ================= SUMS (never negative) ================= */
+/* Maths pitched by age: easy ≈ 5yo (within 10), medium ≈ 7yo (two-digit within 100), hard ≈ 9yo (three-digit with exchanging) */
+function maxHP() { return difficulty === 'easy' ? 10 : (difficulty === 'medium' ? 100 : 200); }
 function rollDamage(targetHp) {
     const a = consecRight >= 3 ? 1 : (consecWrong >= 2 ? -1 : 0); // quietly tune within the difficulty
-    if (difficulty === 'easy') {
-        if (a < 0) return (Math.floor(Math.random() * 3) + 5) * 10;         // gentler tens 50-70
-        if (a > 0) return (Math.floor(Math.random() * 9) + 10) * 5;         // fives 50-90
-        return (Math.floor(Math.random() * 5) + 5) * 10;                    // tens 50-90
+    if (difficulty === 'easy') {                                  // number bonds within 10
+        if (a < 0) return 1 + Math.floor(Math.random() * 3);      // 1-3
+        if (a > 0) return 3 + Math.floor(Math.random() * 7);      // 3-9
+        return 2 + Math.floor(Math.random() * 6);                 // 2-7
     }
-    if (difficulty === 'medium') {
-        if (a < 0) return (Math.floor(Math.random() * 5) + 5) * 10;         // back to tens
-        if (a > 0) return 50 + Math.floor(Math.random() * 70);              // any 50-119
-        return Math.floor(Math.random() * 15) * 5 + 50;                     // fives 50-120
+    if (difficulty === 'medium') {                                // two-digit subtraction within 100
+        if (a < 0) return (1 + Math.floor(Math.random() * 4)) * 10;   // tens 10-40
+        if (a > 0) return 11 + Math.floor(Math.random() * 39);        // any 11-49 (borrowing appears)
+        return (2 + Math.floor(Math.random() * 8)) * 5;               // fives 10-45
     }
-    if (a < 0) return (Math.floor(Math.random() * 8)) * 5 + 50;             // fives 50-85
-    if (a > 0 && typeof targetHp === 'number' && targetHp % 10 < 9) {       // favour sums that need borrowing
-        for (let t = 0; t < 25; t++) { const d = 50 + Math.floor(Math.random() * 40); if (d % 10 > targetHp % 10) return d; }
+    if (a < 0) return (4 + Math.floor(Math.random() * 11)) * 5;       // fives 20-70
+    if (a > 0 && typeof targetHp === 'number' && targetHp % 10 < 9) { // favour sums that need exchanging
+        for (let t = 0; t < 25; t++) { const d = 25 + Math.floor(Math.random() * 75); if (d % 10 > targetHp % 10) return d; }
     }
-    return Math.floor(Math.random() * 40) + 50;
+    return 21 + Math.floor(Math.random() * 79);                       // any 21-99
 }
-function pickTurnMoves(mon, maxDmg) {
+function pickTurnMoves(mon, biasHp) {
     const picked = [...movesFor(mon)].sort(() => Math.random() - .5).slice(0, 2);
-    let d1 = rollDamage(maxDmg), d2 = rollDamage(maxDmg), guard = 0;
-    while (d1 === d2 && guard++ < 20) d2 = rollDamage(maxDmg);
-    return picked.map(([name, type], i) => ({ name, type, dmg: Math.max(1, Math.min(i === 0 ? d1 : d2, maxDmg)) }));
+    let d1 = rollDamage(biasHp), d2 = rollDamage(biasHp), guard = 0;
+    while (d1 === d2 && guard++ < 20) d2 = rollDamage(biasHp);
+    return picked.map(([name, type], i) => ({ name, type, dmg: Math.max(1, i === 0 ? d1 : d2) }));
 }
 function catchSum() {
     let a, b;
-    if (difficulty === 'easy') { a = (Math.floor(Math.random() * 5) + 1) * 10; b = (Math.floor(Math.random() * 4) + 1) * 10; }
-    else if (difficulty === 'medium') { a = Math.floor(Math.random() * 39) + 11; b = Math.floor(Math.random() * 39) + 11; }
-    else { a = Math.floor(Math.random() * 64) + 25; b = Math.floor(Math.random() * 64) + 25; }
+    if (difficulty === 'easy') { a = 2 + Math.floor(Math.random() * 8); b = 2 + Math.floor(Math.random() * 8); }        // single digits
+    else if (difficulty === 'medium') { a = 12 + Math.floor(Math.random() * 38); b = 11 + Math.floor(Math.random() * 38); } // two-digit
+    else { a = 25 + Math.floor(Math.random() * 64); b = 25 + Math.floor(Math.random() * 64); }
     return { a, b, ans: a + b };
 }
 /* Potion values scale with difficulty: easy = 5s/10s, medium = 2s/5s/10s, hard = any */
 function snapRand(lo, hi, step) { const base = Math.ceil(lo / step) * step; const n = Math.floor((hi - base) / step); return base + Math.floor(Math.random() * (n + 1)) * step; }
 function rollHeals() {
-    if (difficulty === 'easy') {
-        curHeals.reg = snapRand(10, 25, 5); curHeals.sup = snapRand(30, 50, 5); curHeals.hyp = snapRand(55, 80, 5);
+    if (difficulty === 'easy') {          // tiny top-ups to match 10 HP
+        curHeals.reg = 2 + Math.floor(Math.random() * 2); curHeals.sup = 4 + Math.floor(Math.random() * 3); curHeals.hyp = 7 + Math.floor(Math.random() * 3);
     } else if (difficulty === 'medium') {
         const s = () => [2, 5, 10][Math.floor(Math.random() * 3)];
-        curHeals.reg = snapRand(10, 28, s()); curHeals.sup = snapRand(32, 58, s()); curHeals.hyp = snapRand(60, 88, s());
+        curHeals.reg = snapRand(10, 28, s()); curHeals.sup = snapRand(30, 55, s()); curHeals.hyp = snapRand(58, 85, s());
     } else {
-        curHeals.reg = 11 + Math.floor(Math.random() * 19); curHeals.sup = 31 + Math.floor(Math.random() * 29); curHeals.hyp = 61 + Math.floor(Math.random() * 29);
+        curHeals.reg = 15 + Math.floor(Math.random() * 21); curHeals.sup = 40 + Math.floor(Math.random() * 36); curHeals.hyp = 80 + Math.floor(Math.random() * 51);
     }
     document.getElementById('val-reg').innerText = `+${curHeals.reg}`;
     document.getElementById('val-sup').innerText = `+${curHeals.sup}`;
@@ -735,7 +740,7 @@ function applyCardTheme(side, type) {
 }
 function makeUnit(r, canShiny) {
     const shiny = canShiny && Math.random() < 0.06;
-    return { ...r, shiny, img: shiny ? ARTS(r.id) : ART(r.id), hp: 200, max: 200, introduced: false };
+    return { ...r, shiny, img: shiny ? ARTS(r.id) : ART(r.id), hp: maxHP(), max: maxHP(), introduced: false };
 }
 function pickTeams() {
     const pool = [...roster].sort(() => Math.random() - .5);
@@ -744,7 +749,7 @@ function pickTeams() {
 }
 
 function startGame(lvl) {
-    initAudio(); difficulty = lvl;
+    initAudio(); pickVoice(); difficulty = lvl;
     document.getElementById('timer-container').style.display = (lvl === 'easy') ? 'none' : 'block';
     document.getElementById('overlay').style.display = 'none';
     document.getElementById('end-screen').style.display = 'none';
@@ -786,7 +791,7 @@ function resumeBattle() {
     consecRight = 0; consecWrong = 0; retryDmgBase = null;
     potionsUsed = s.potions || { reg: false, sup: false, hyp: false };
     ['reg', 'sup', 'hyp'].forEach(k => document.getElementById('btn-' + k).classList.toggle('used', !!potionsUsed[k]));
-    const mk = u => { const r = roster.find(x => x.id === u.id); return { ...r, shiny: u.shiny, hp: u.hp, max: 200, img: u.shiny ? ARTS(u.id) : ART(u.id), introduced: true }; };
+    const mk = u => { const r = roster.find(x => x.id === u.id); return { ...r, shiny: u.shiny, hp: u.hp, max: maxHP(), img: u.shiny ? ARTS(u.id) : ART(u.id), introduced: true }; };
     playerTeam = s.pt.map(mk); oppTeam = s.ot.map(mk);
     rollHeals(); clearAns(); updateUI(); nextTurn();
 }
@@ -843,13 +848,13 @@ function nextTurn() {
     p.moves2 = pm; o.moves2 = om;
     const m = pm[Math.floor(Math.random() * 2)];
     if (retryDmgBase !== null) { // second chance with similar (not identical) numbers
-        const delta = difficulty === 'easy' ? 10 : (difficulty === 'medium' ? 5 : 1 + Math.floor(Math.random() * 3));
+        const delta = difficulty === 'easy' ? 1 + Math.floor(Math.random() * 2) : (difficulty === 'medium' ? 5 : 1 + Math.floor(Math.random() * 3));
         let nd = retryDmgBase + (Math.random() < .5 ? -delta : delta);
-        if (nd < 10) nd = retryDmgBase + delta;
-        m.dmg = Math.max(1, Math.min(nd, o.hp));
+        if (nd < 1) nd = retryDmgBase + delta;
+        m.dmg = Math.max(1, nd);
         retryDmgBase = null;
     }
-    gameState.currentMove = m; gameState.mode = 'atk'; gameState.answer = o.hp - m.dmg;
+    gameState.currentMove = m; gameState.mode = 'atk'; gameState.answer = Math.max(0, o.hp - m.dmg); // HP can't drop below zero, so 0 is the right answer
     gameState.expLen = String(gameState.answer).length;
     gameState.q = { v1: o.hp, v2: m.dmg, op: '−' };
     renderMoves('p', pm); renderMoves('o', om);
@@ -952,7 +957,7 @@ function submit() {
         missedSums.push(`${gameState.q.v1} ${gameState.q.op} ${gameState.q.v2} = ${ans}`);
         document.getElementById('question').innerText = `${oops} The answer was ${ans}!`;
         speak(`${oops} The answer was ${ans}.`);
-        const counter = (o.moves2 || [{ name: 'Tackle', type: 'normal', dmg: 50 }])[Math.floor(Math.random() * 2)];
+        const counter = (o.moves2 || [{ name: 'Tackle', type: 'normal', dmg: rollDamage() }])[Math.floor(Math.random() * 2)];
         gameState.currentMove = null;
         openReview(val, ans, () => {
             setTimeout(() => showToast(`${o.name} fights back!`), 500);
@@ -1113,6 +1118,10 @@ function wobbleSequence(ball, times, done) {
         setTimeout(wob, 780);
     })();
 }
+function afterSpeech(cb, maxMs = 7000) {
+    const t0 = Date.now();
+    (function chk() { if (!synth || !synth.speaking || Date.now() - t0 > maxMs) cb(); else setTimeout(chk, 200); })();
+}
 let pendingMilestone = null;
 function checkMilestone() {
     const done = JSON.parse(localStorage.getItem('pmaths_miles')) || [];
@@ -1126,14 +1135,14 @@ function endCatch(ball) {
     document.getElementById('catch-img').classList.remove('escape');
     if (pendingMilestone) {
         const m = pendingMilestone; pendingMilestone = null;
-        setTimeout(() => {
-            playSfx('fanfare');
-            for (let i = 0; i < 6; i++) setTimeout(() => burst(Math.random() * canvas.width, Math.random() * canvas.height * .5, ['#ffd700', '#fff', `hsl(${Math.random()*360},100%,65%)`], 20, 7), i * 250);
-            showToast(`🏅 ${m} POKÉMON CAUGHT! 🏅`);
-            speak(m === 150 ? 'Incredible! You caught all one hundred and fifty pokemon! You are a true Pokemon Master!' : `Amazing! ${m} pokemon caught!`);
-        }, 600);
+        playSfx('fanfare');
+        for (let i = 0; i < 6; i++) setTimeout(() => burst(Math.random() * canvas.width, Math.random() * canvas.height * .5, ['#ffd700', '#fff', `hsl(${Math.random()*360},100%,65%)`], 20, 7), i * 250);
+        showToast(`🏅 ${m} POKÉMON CAUGHT! 🏅`);
+        setTimeout(() => speak(m === 150 ? 'Incredible! You caught all one hundred and fifty pokemon! You are a true Pokemon Master!' : `Amazing! ${m} pokemon caught!`), 400);
+        setTimeout(() => afterSpeech(proceedAfterOppKO), 900);
+    } else {
+        afterSpeech(proceedAfterOppKO); // let "Gotcha!" / "ran away" finish before the next question speaks
     }
-    proceedAfterOppKO();
 }
 function proceedAfterOppKO() {
     gameState.catchTarget = null;
@@ -1218,11 +1227,9 @@ function openDex() {
     list.querySelectorAll('.dex-entry').forEach((el, i) => { el.onclick = () => dexEntryTap(roster[i]); });
     document.getElementById('dex-title').innerText = `CAUGHT: ${count}/150${shinyDex.length ? ' ✨' + shinyDex.length : ''}`;
     document.getElementById('pokedex-view').style.display = 'flex';
+    localStorage.setItem('pmaths_dex_seen', JSON.stringify(dex)); // NEW badges show for this viewing only
 }
-function closeDex() {
-    document.getElementById('pokedex-view').style.display = 'none';
-    localStorage.setItem('pmaths_dex_seen', JSON.stringify(dex)); // fresh-catch sparkles shown once
-}
+function closeDex() { document.getElementById('pokedex-view').style.display = 'none'; }
 function dexEntryTap(r) {
     if (!dex.includes(r.id)) { showToast('Not caught yet!'); return; }
     const isShiny = shinyDex.includes(r.id);
