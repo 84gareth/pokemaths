@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="PokeMaths">
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/ultra-ball.png">
-    <title>PokeMaths V19</title>
+    <meta name="apple-mobile-web-app-title" content="PokéMaths">
+    <link rel="apple-touch-icon" href="./icon.png">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#2a5da8">
+    <title>PokéMaths</title>
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -267,8 +269,9 @@
         <div class="float-ball" style="top:10%; left:8%;"></div>
         <div class="float-ball" style="top:72%; left:82%; animation-delay:-2s;"></div>
         <div class="float-ball" style="top:80%; left:12%; animation-delay:-4s; width:30px; height:30px;"></div>
-        <h1 class="big-logo">PokeMaths</h1>
+        <h1 class="big-logo">PokéMaths</h1>
         <div class="tagline">Battle with your brain!</div>
+        <div id="ver" style="position:absolute; bottom: calc(env(safe-area-inset-bottom, 8px) + 8px); right: 14px; z-index: 6; font-weight: 800; font-size: 12px; color: rgba(255,255,255,.65);"></div>
         <button id="resume-btn" class="end-btn btn-gold" style="display:none; position:relative; z-index:5; margin: 0 0 16px; width: 230px;" onclick="resumeBattle()">▶ RESUME BATTLE</button>
         <div class="diff-row">
             <div class="diff-card" onclick="startGame('easy')"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png" alt="Charmander">EASY<div class="diff-sub">No timer!</div></div>
@@ -647,6 +650,9 @@ function markLastPlayed() {
 }
 window.addEventListener('resize', () => { setAppH(); initCanvas(); sizeCatchScreen(); });
 window.addEventListener('orientationchange', () => setTimeout(() => { setAppH(); initCanvas(); sizeCatchScreen(); }, 150));
+const GAME_VERSION = 19; // bump on each release; shown on the title screen so you can spot stale caches
+document.getElementById('ver').innerText = 'v' + GAME_VERSION;
+if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {})); }
 document.addEventListener('dblclick', e => e.preventDefault(), { passive: false });
 setAppH(); initCanvas(); markLastPlayed(); refreshResumeBtn();
 function drawStar(c, x, y, r, rot) {
