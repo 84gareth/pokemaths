@@ -112,7 +112,8 @@
         .p-super .potion-val { color: #5d4300; text-shadow: none; }
 
         #numpad-wrapper { flex: 1; display: flex; flex-direction: column; max-width: 450px; min-height: 0; }
-        #display-answer { background: #fff; font-size: 1.55rem; width: 100%; border-radius: 12px; height: 38px; color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; border: 3px solid #d4a017; margin-bottom: 6px; flex-shrink: 0; position: relative; }
+        #display-answer { background: #fff; font-size: 1.5rem; width: 100%; border-radius: 12px; height: 38px; color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; border: 3px solid #d4a017; margin-bottom: 6px; flex-shrink: 0; position: relative; overflow: hidden; }
+        #answer-text { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; line-height: 1; }
         .pad-and-submit { display: flex; flex-direction: row; flex: 1; gap: 10px; min-height: 0; }
         .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; flex: 3; }
         .num-btn { background: linear-gradient(#ffffff, #e8ecf2); border: none; border-radius: 12px; font-size: 1.3rem; font-weight: 800; font-family: var(--font-main); color: #2f3640; cursor: pointer; box-shadow: 0 4px 0 #a9b4c0; transition: transform .06s; }
@@ -140,7 +141,7 @@
         .rev-val.noans { font-size: 20px; color: #999; padding-top: 6px; }
         #review-tap { font-weight: 800; font-size: 15px; color: #cfe0ff; animation: tapPulse 1.4s ease-in-out infinite; margin-top: 4px; }
         @keyframes tapPulse { 0%, 100% { opacity: .55; transform: scale(1); } 50% { opacity: 1; transform: scale(1.06); } }
-        .digit-slot { display: inline-flex; width: 22px; height: 27px; margin: 0 2px; border: 2px dashed #b9c2cc; border-radius: 6px; align-items: center; justify-content: center; font-size: 1.15rem; line-height: 1; font-weight: 800; color: #2f3640; }
+        .digit-slot { display: flex; width: 21px; height: 25px; margin: 0 2px; border: 2px dashed #b9c2cc; border-radius: 6px; align-items: center; justify-content: center; font-size: 1.05rem; line-height: 1; font-weight: 800; color: #2f3640; flex-shrink: 0; }
         .digit-slot.filled { border-style: solid; border-color: #3d7dca; background: #eaf3ff; }
         @keyframes okFlash { 0% { background: #7dff9b; box-shadow: 0 0 16px #4caf50; } 100% { background: #fff; } }
         #display-answer.ok-anim { animation: okFlash .4s ease; }
@@ -159,6 +160,17 @@
         #toast.show { animation: toastPop 1.6s ease forwards; }
 
         /* ---------- CATCH SCREEN ---------- */
+        #heal-screen { position: fixed; left: 0; right: 0; top: 0; bottom: 0; z-index: 1550; display: none; flex-direction: column; align-items: center; justify-content: space-evenly; padding: calc(env(safe-area-inset-top, 10px) + 62px) 10px 4px; background: radial-gradient(circle at 50% 30%, rgba(46, 160, 105, .92), rgba(6, 32, 20, .97) 74%); }
+        #heal-screen.open { display: flex; }
+        #heal-title { font-family: var(--font-title); font-size: clamp(15px, 4.6vw, 21px); color: #b9ffcf; text-shadow: 2px 2px 0 rgba(0,0,0,.5); text-align: center; padding: 0 12px; flex-shrink: 0; }
+        #heal-stage { position: relative; max-height: 32%; min-height: 60px; flex-shrink: 1; display: flex; align-items: center; justify-content: center; }
+        #heal-poke { max-height: 100%; max-width: 60vw; object-fit: contain; filter: drop-shadow(0 0 22px rgba(140,255,180,.55)); }
+        #heal-potion { position: absolute; bottom: -6px; right: -34px; width: 58px; height: 58px; image-rendering: pixelated; filter: drop-shadow(0 3px 4px rgba(0,0,0,.45)); animation: potionBob 1.6s ease-in-out infinite; }
+        #heal-potion.pour { animation: potionPour 1.1s ease forwards; }
+        #heal-sum { font-family: var(--font-title); font-size: clamp(22px, 7.5vw, 32px); color: #fff; background: linear-gradient(#333, #111); border: 3px solid #fff; border-radius: 16px; padding: 10px 22px 6px; box-shadow: 0 4px 12px rgba(0,0,0,.45); flex-shrink: 0; white-space: nowrap; }
+        #heal-timerbar { width: 70%; max-width: 320px; height: 10px; background: #222; border: 2px solid #fff; border-radius: 8px; overflow: hidden; flex-shrink: 0; }
+        @keyframes potionBob { 0%, 100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-7px) rotate(4deg); } }
+        @keyframes potionPour { 0% { transform: rotate(0); opacity: 1; } 45% { transform: rotate(-125deg) translateY(-14px); opacity: 1; } 100% { transform: rotate(-125deg) translateY(-14px); opacity: 0; } }
         #catch-screen { position: fixed; left: 0; right: 0; top: 0; bottom: 0; z-index: 1550; display: none; flex-direction: column; align-items: center; justify-content: space-evenly; padding: calc(env(safe-area-inset-top, 10px) + 62px) 10px 4px; background: radial-gradient(circle at 50% 30%, rgba(61,125,202,.94), rgba(8,15,38,.97) 72%); }
         #catch-screen.open { display: flex; }
         #catch-title { font-family: var(--font-title); font-size: clamp(15px, 4.6vw, 21px); color: var(--poke-yellow); text-shadow: 2px 2px 0 rgba(0,0,0,.5); text-align: center; padding: 0 12px; flex-shrink: 0; }
@@ -233,6 +245,12 @@
         <div class="rev-card bad"><div class="rev-mark">✗</div><div class="rev-text"><div class="rev-label">YOUR ANSWER</div><div class="rev-val" id="rev-yours"></div></div></div>
         <div class="rev-card good"><div class="rev-mark">✓</div><div class="rev-text"><div class="rev-label">CORRECT ANSWER</div><div class="rev-val" id="rev-correct"></div></div></div>
         <div id="review-tap">Tap anywhere to continue</div>
+    </div>
+    <div id="heal-screen">
+        <div id="heal-title"></div>
+        <div id="heal-stage"><img id="heal-poke" alt=""><img id="heal-potion" alt=""></div>
+        <div id="heal-sum"></div>
+        <div id="heal-timerbar"><div id="heal-timer-fill" class="timer-fill"></div></div>
     </div>
     <div id="catch-screen">
         <div id="catch-title">A wild POKEMON is weak!</div>
@@ -555,13 +573,16 @@ let ukVoice = null;
 /* Score every available voice: British English + female + high-quality (Natural/Enhanced/Premium) wins */
 function scoreVoice(v) {
     if (!v.lang || !/^en/i.test(v.lang)) return -1;
-    let s = 0; const n = v.name || '';
+    let s = 0; const n = v.name || '', uri = v.voiceURI || '';
     if (/en[-_]GB/i.test(v.lang)) s += 40;
+    else if (/en[-_](IE|AU|NZ|ZA)/i.test(v.lang)) s += 18;              // nearest accents if no British female exists
+    else s += 6;
     if (/natural/i.test(n)) s += 30;                                    // Edge neural voices
-    if (/enhanced|premium/i.test(n)) s += 22;                           // iOS downloaded high-quality voices
-    if (/sonia|libby|maisie|hollie|olivia|kate|serena|stephanie|martha|susan|hazel|google uk english female/i.test(n)) s += 25;
-    if (/\bmale\b|daniel|arthur|ryan|thomas|oliver|george|aaron|fred/i.test(n)) s -= 20; // prefer a female voice
-    if (v.localService === false) s += 4;                               // remote (Google) voices sound better
+    if (/enhanced|premium/i.test(n + uri)) s += 22;                     // iOS downloaded high-quality voices
+    if (/compact/i.test(uri)) s -= 8;                                   // avoid the tinny compact variants
+    if (/sonia|libby|maisie|hollie|olivia|kate|serena|stephanie|martha|susan|hazel|karen|moira|tessa|samantha|nicky|allison|ava|zoe|shelley|joelle|google uk english female|\bfemale\b/i.test(n)) s += 25;
+    if (/\bmale\b|daniel|arthur|ryan|thomas|oliver|george|aaron|fred|gordon|rishi|lee\b/i.test(n)) s -= 20; // never the default male if any female exists
+    if (v.localService === false) s += 4;
     return s;
 }
 function pickVoice() {
@@ -579,7 +600,8 @@ function speak(txt) {
         const clean = txt.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{2640}\u{2642}]/gu, "").replace(/-/g, " ").replace(/\s+/g, " ").trim();
         const u = new SpeechSynthesisUtterance(clean.charAt(0) + clean.slice(1).toLowerCase());
         if (ukVoice) u.voice = ukVoice;
-        u.lang = 'en-GB'; u.rate = 1.0; u.pitch = 1.04;
+        u.lang = ukVoice ? ukVoice.lang : 'en-GB'; // mismatched lang makes iOS ignore the chosen voice and fall back to Daniel
+        u.rate = 1.0; u.pitch = 1.04;
         synth.speak(u);
     } catch (e) {}
 }
@@ -801,6 +823,7 @@ function goHome() {
     document.getElementById('end-screen').style.display = 'none';
     document.getElementById('catch-screen').classList.remove('open');
     document.getElementById('review-overlay').classList.remove('open'); reviewContinue = null;
+    closeHealScreen();
     document.getElementById('overlay').style.display = 'flex';
     ['home-btn', 'dex-btn', 'stats-btn'].forEach(id => document.getElementById(id).style.display = 'none');
     localStorage.removeItem('pmaths_save'); refreshResumeBtn();
@@ -854,7 +877,8 @@ function nextTurn() {
         m.dmg = Math.max(1, nd);
         retryDmgBase = null;
     }
-    gameState.currentMove = m; gameState.mode = 'atk'; gameState.answer = Math.max(0, o.hp - m.dmg); // HP can't drop below zero, so 0 is the right answer
+    if (difficulty === 'easy') m.dmg = Math.min(m.dmg, o.hp); // age 5: no overshoot sums
+    gameState.currentMove = m; gameState.mode = 'atk'; gameState.answer = Math.max(0, o.hp - m.dmg); // on medium/hard HP floors at zero, so 0 is the right answer
     gameState.expLen = String(gameState.answer).length;
     gameState.q = { v1: o.hp, v2: m.dmg, op: '−' };
     renderMoves('p', pm); renderMoves('o', om);
@@ -885,6 +909,15 @@ function useHeal(potionName) {
     const qText = pick(PHRASES.heal)(p.name, potionName);
     document.getElementById('question').innerText = qText;
     document.getElementById('sum-v1').innerText = p.hp; document.getElementById('sum-v2').innerText = amt; document.getElementById('sum-op').innerText = "+";
+    // potion moment gets its own stage, like the catch screen
+    sizeCatchScreen();
+    document.getElementById('heal-title').innerText = qText;
+    loadImg(document.getElementById('heal-poke'), p.img, SPRITE_SM(p.id));
+    const pot = document.getElementById('heal-potion');
+    pot.classList.remove('pour'); pot.src = POTION_IMG[potionName] || POTION_IMG['Potion'];
+    document.getElementById('heal-sum').innerText = `${p.hp} + ${amt} = ?`;
+    document.getElementById('heal-timerbar').style.display = difficulty === 'easy' ? 'none' : 'block';
+    document.getElementById('heal-screen').classList.add('open');
     speak(qText); startTimer();
 }
 
@@ -900,6 +933,7 @@ function renderAnswer() {
 function updateAnswerMirror() {
     document.getElementById('sum-ans').innerText = ansBuf;
     if (gameState.mode === 'catch') document.getElementById('catch-sum').innerText = `${gameState.catchA} + ${gameState.catchB} = ${ansBuf || '?'}`;
+    if (gameState.mode === 'heal') document.getElementById('heal-sum').innerText = `${gameState.q.v1} + ${gameState.q.v2} = ${ansBuf || '?'}`;
 }
 function press(n) {
     playSfx('press');
@@ -945,9 +979,18 @@ function submit() {
                 finishTurn();
             });
         } else {
-            p.hp = Math.min(p.max, gameState.rawHealingResult);
-            playSfx('heal'); riseSparkles(pCard, '#7dff9b');
-            finishTurn();
+            gameState.mode = 'idle'; // lock input during the healing moment
+            const healed = Math.min(p.max, gameState.rawHealingResult);
+            const gained = healed - p.hp;
+            const pot = document.getElementById('heal-potion'), pokeImg = document.getElementById('heal-poke');
+            pot.classList.add('pour');
+            playSfx('heal'); tone(1320, .36, .3, 'sine', .07); tone(1568, .5, .35, 'sine', .06);
+            setTimeout(() => {
+                riseSparkles(pokeImg, '#7dff9b'); riseSparkles(pokeImg, '#c8ffe0');
+                damagePopup(pokeImg, `+${gained}`, '#4caf50');
+                p.hp = healed; refreshBars();
+            }, 450);
+            setTimeout(() => { closeHealScreen(); finishTurn(300); }, 1700);
         }
     } else {
         playSfx('wrong');
@@ -955,6 +998,7 @@ function submit() {
         const ans = gameState.answer;
         const oops = pick(PHRASES.wrong);
         missedSums.push(`${gameState.q.v1} ${gameState.q.op} ${gameState.q.v2} = ${ans}`);
+        closeHealScreen();
         document.getElementById('question').innerText = `${oops} The answer was ${ans}!`;
         speak(`${oops} The answer was ${ans}.`);
         const counter = (o.moves2 || [{ name: 'Tackle', type: 'normal', dmg: rollDamage() }])[Math.floor(Math.random() * 2)];
@@ -1024,10 +1068,17 @@ function handleKO(side) {
 }
 
 function sizeCatchScreen() {
-    const scr = document.getElementById('catch-screen');
     const top = document.getElementById('controls-area').getBoundingClientRect().top;
-    scr.style.bottom = Math.max(0, window.innerHeight - top) + 'px';
+    const b = Math.max(0, window.innerHeight - top) + 'px';
+    document.getElementById('catch-screen').style.bottom = b;
+    document.getElementById('heal-screen').style.bottom = b;
 }
+const POTION_IMG = {
+    'Potion': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/potion.png',
+    'Super Potion': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/super-potion.png',
+    'Hyper Potion': 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/hyper-potion.png'
+};
+function closeHealScreen() { document.getElementById('heal-screen').classList.remove('open'); }
 function startCatch(target) {
     gameState.mode = 'catch'; gameState.catchTarget = target;
     gameState.dailyBonus = localStorage.getItem('pmaths_daily') !== todayStr();
@@ -1196,7 +1247,7 @@ function startTimer() {
     clearInterval(timerId);
     if (difficulty === 'easy') return;
     timeLeft = 20;
-    const fills = [document.getElementById('timer-fill'), document.getElementById('catch-timer-fill')];
+    const fills = [document.getElementById('timer-fill'), document.getElementById('catch-timer-fill'), document.getElementById('heal-timer-fill')];
     fills.forEach(f => { f.style.width = '100%'; f.style.background = 'linear-gradient(90deg,#00e5ff,#00ffcc)'; });
     timerId = setInterval(() => {
         timeLeft -= 0.1;
